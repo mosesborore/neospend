@@ -10,11 +10,7 @@
 
   let { data }: PageProps = $props();
 
-  function getForm() {
-    return superForm(data.form);
-  }
-
-  const { form, errors, message, enhance, constraints } = getForm();
+  const { form, errors, message, enhance, constraints } = superForm(data.form);
 </script>
 
 <svelte:head>
@@ -34,7 +30,11 @@
         </Card.Action>
       </Card.Header>
       <Card.Content>
-        {#if $message}<h3 class="text-xs mt-4 text-slate-400">{$message}</h3>{/if}
+        {#if $message}
+          <p class="text-xs mb-2 text-center">
+            {$message}
+          </p>
+        {/if}
 
         <form method="POST" use:enhance>
           <div class="flex flex-col gap-6">

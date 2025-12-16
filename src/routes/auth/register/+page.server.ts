@@ -28,7 +28,7 @@ export const actions = {
     const existingUser = await checkIfEmailExists(form.data.email);
 
     if (existingUser) {
-      return fail(400, { form });
+      return message(form, "User already exists. Go to login page.");
     }
 
     const userId = generateIdFromEntropySize(10);
@@ -54,9 +54,7 @@ export const actions = {
         ...sessionCookie.attributes,
       });
     } catch {
-      return message(form, {
-        message: "An error has occured while loggin in.",
-      });
+      return message(form, "An error has occured while loggin in.");
     }
 
     return redirect(
