@@ -8,6 +8,8 @@ import { eq } from "drizzle-orm";
 
 import { db } from "$lib/server/database/db";
 import { userTable } from "$lib/server/database/schema";
+import { lucia } from "$lib/server/auth";
+import { redirect } from "sveltekit-flash-message/server";
 
 const LoginSchema = z.object({
   email: z.email(),
@@ -37,15 +39,19 @@ export const actions = {
       return message(loginForm, "Incorrect email or password.");
     }
 
-    const validPassword = await verify(existingUser.password, password, {
-      memoryCost: 19456,
-      timeCost: 2,
-      outputLen: 32,
-      parallelism: 1,
-    });
+    const validPassword = await verify(
+      existingUser.password,
+      loginForm.data.password,
+      {
+        memoryCost: 19456,
+        timeCost: 2,
+        outputLen: 32,
+        parallelism: 1,
+      }
+    );
 
     if (!validPassword) {
-      return message(form, "Incorrect email or password.");
+      return message(loginForm, "Incorrect email or password.");
     }
 
     const session = await lucia.createSession(existingUser.id, {});
