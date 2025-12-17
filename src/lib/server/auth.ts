@@ -5,7 +5,8 @@ import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
 
 import { db } from "./database/db";
 import { sessionTable, userTable } from "./database/schema";
-
+import { redirect } from "sveltekit-flash-message/server";
+import { getRequestEvent } from "$app/server";
 const adapter = new DrizzlePostgreSQLAdapter(db, sessionTable, userTable);
 
 export const lucia = new Lucia(adapter, {
@@ -36,4 +37,23 @@ interface DatabaseUserAttributes {
   name: string;
 }
 
-// you are an expert in database management. I want you to take me through the following concepts: database modelling, migrations. data ingestion, and how to do them an efficient, effective and performant and cost effective. Be concise and straight to the point
+export function requireLogin() {
+  const event = getRequestEvent();
+  const { locals } = event;
+
+  if (!locals.user) {
+    return redirect(
+      "/auth/login",
+      {
+        type: "success",
+        message: {
+          title: "Please login first.",
+          description: "",
+        },
+      },
+      event.cookies
+    );
+  }
+
+  return locals.user;
+}
