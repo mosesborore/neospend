@@ -67,12 +67,12 @@
             </div>
             <div class="mt-4">
               <Button variant="default" type="submit" class="w-full"
-                >Create Account</Button
+                >Login</Button
               >
               <Button
                 variant="secondary"
                 class="w-full mt-2 bg-blue-700 text-white"
-                >Create via Google</Button
+                >Login with Google</Button
               >
             </div>
           </div>
