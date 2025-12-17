@@ -6,3 +6,8 @@ export const RegisterUserZodSchema = z.object({
   name: z.string().min(2).max(80),
   password: z.string().min(8).max(50),
 });
+
+export const LoginSchema = z.object({
+  email: z.email(),
+  password: z.string().min(2).max(50),
+});

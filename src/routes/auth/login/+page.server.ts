@@ -1,28 +1,23 @@
 import type { Actions, PageServerLoad } from "./$types";
 
 import { verify } from "@node-rs/argon2";
-import { z } from "zod";
 import { message, superValidate } from "sveltekit-superforms";
 import { zod4 } from "sveltekit-superforms/adapters";
 import { eq } from "drizzle-orm";
-
-import { db } from "$lib/server/database/db";
 import { userTable } from "$lib/server/database/schema";
-import { lucia } from "$lib/server/auth";
 import { redirect } from "sveltekit-flash-message/server";
 
-const LoginSchema = z.object({
-  email: z.email(),
-  password: z.string().max(50),
-});
+import { db } from "$lib/server/database/db";
+import { lucia } from "$lib/server/auth";
+import { LoginSchema } from "$lib/validation/schemas";
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ locals, cookies }) => {
   const loginForm = await superValidate(zod4(LoginSchema));
   return { loginForm };
 };
 
 export const actions = {
-  login: async ({ request, cookies }) => {
+  login: async ({ locals, request, cookies }) => {
     const loginForm = await superValidate(request, zod4(LoginSchema));
 
     if (!loginForm.valid) {
@@ -62,12 +57,15 @@ export const actions = {
       ...sessionCookie.attributes,
     });
 
+    const userName =
+      existingUser.name.charAt(0).toUpperCase() + existingUser.name.slice(1);
+
     return redirect(
       "/",
       {
         type: "success",
         message: {
-          title: `Welcome back, ${existingUser.name}..`,
+          title: `Welcome back, ${userName}.`,
           description: "",
         },
       },
