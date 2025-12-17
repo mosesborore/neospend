@@ -21,6 +21,11 @@
   let { children, data }: LayoutProps = $props();
 
   let alertContainer = $state<HTMLDivElement | null>(null);
+
+  function dismissAlert() {
+    alertContainer?.remove();
+    alertContainer = null;
+  }
 </script>
 
 <svelte:head>
@@ -32,11 +37,8 @@
 <Navbar isAuthenticated={data.isAuthenticated} />
 
 {#if $flash}
-  <div class="container mx-auto mt-4">
-    <div
-      class="grid w-full max-w-xl items-start gap-4 mx-auto"
-      bind:this={alertContainer}
-    >
+  <div class="container mx-auto mt-4" bind:this={alertContainer}>
+    <div class="grid w-full max-w-xl items-start gap-4 mx-auto">
       <Alert.Root
         variant={$flash.type === "error" ? "destructive" : "default"}
         class="flex"
@@ -52,9 +54,7 @@
         {/if}
 
         <span class="ms-auto">
-          <button onclick={() => alertContainer?.remove()}>
-            <X size="18" /></button
-          >
+          <button onclick={() => dismissAlert()}> <X size="18" /></button>
         </span>
       </Alert.Root>
     </div>
