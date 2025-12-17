@@ -6,8 +6,6 @@ import { hash, verify } from "@node-rs/argon2";
 import { generateIdFromEntropySize } from "lucia";
 import { lucia } from "$lib/server/auth";
 
-import { fail } from "@sveltejs/kit";
-
 import { RegisterUserZodSchema } from "$lib/validation/schemas";
 import { checkIfEmailExists, insertNewUser } from "$lib/server/database/utils";
 
