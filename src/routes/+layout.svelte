@@ -10,6 +10,7 @@
   import { ModeWatcher } from "mode-watcher";
   import * as Alert from "$lib/components/ui/alert/index.js";
   import CheckCircle2Icon from "@lucide/svelte/icons/check-circle-2";
+  import X from "@lucide/svelte/icons/x";
   import CircleAlertIcon from "@lucide/svelte/icons/circle-alert";
 
   import { getFlash } from "sveltekit-flash-message";
@@ -18,6 +19,8 @@
   const flash = getFlash(page);
 
   let { children, data }: LayoutProps = $props();
+
+  let alertContainer = $state<HTMLDivElement | null>(null);
 </script>
 
 <svelte:head>
@@ -30,8 +33,14 @@
 
 {#if $flash}
   <div class="container mx-auto mt-4">
-    <div class="grid w-full max-w-xl items-start gap-4 mx-auto">
-      <Alert.Root variant={$flash.type === "error" ? "destructive" : "default"}>
+    <div
+      class="grid w-full max-w-xl items-start gap-4 mx-auto"
+      bind:this={alertContainer}
+    >
+      <Alert.Root
+        variant={$flash.type === "error" ? "destructive" : "default"}
+        class="flex"
+      >
         {#if $flash.type === "success"}
           <CheckCircle2Icon />
         {:else}
@@ -41,6 +50,12 @@
         {#if $flash.message.description}
           <Alert.Description>{$flash.message.description}</Alert.Description>
         {/if}
+
+        <span class="ms-auto">
+          <button onclick={() => alertContainer?.remove()}>
+            <X size="18" /></button
+          >
+        </span>
       </Alert.Root>
     </div>
   </div>
