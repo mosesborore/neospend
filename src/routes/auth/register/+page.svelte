@@ -31,7 +31,7 @@
       </Card.Header>
       <Card.Content>
         {#if $message}
-          <p class="text-xs mb-2 text-center">
+          <p class="text-sm mb-2 text-center text-muted-foreground">
             {$message}
           </p>
         {/if}

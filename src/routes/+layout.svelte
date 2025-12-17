@@ -13,10 +13,11 @@
   import CircleAlertIcon from "@lucide/svelte/icons/circle-alert";
 
   import { getFlash } from "sveltekit-flash-message";
+  import type { LayoutProps } from "./$types";
 
   const flash = getFlash(page);
 
-  let { children } = $props();
+  let { children, data }: LayoutProps = $props();
 </script>
 
 <svelte:head>
@@ -25,7 +26,7 @@
 
 <ModeWatcher />
 
-<Navbar />
+<Navbar isAuthenticated={data.isAuthenticated} />
 
 {#if $flash}
   <div class="container mx-auto mt-4">
