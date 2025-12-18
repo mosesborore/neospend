@@ -4,6 +4,7 @@
 
   import { Button } from "$lib/components/ui/button/index.js";
   // import { Label } from "$lib/components/ui/label/index.js";
+  import { Spinner } from "$lib/components/ui/spinner/index.js";
 
   import { Input } from "$lib/components/ui/input/index.js";
   import * as Card from "$lib/components/ui/card/index.js";
@@ -14,11 +15,12 @@
     return data.loginForm;
   }
 
-  const { form, errors, message, enhance, constraints } = superForm(getForm());
+  const { form, errors, message, delayed, enhance, constraints } =
+    superForm(getForm());
 </script>
 
 <svelte:head>
-  <title>Register</title>
+  <title>Login</title>
 </svelte:head>
 
 <main>
@@ -66,9 +68,12 @@
               />
             </div>
             <div class="mt-4">
-              <Button variant="default" type="submit" class="w-full"
-                >Login</Button
-              >
+              <Button variant="default" type="submit" class="w-full">
+                Login
+                {#if $delayed}
+                  <Spinner />
+                {/if}
+              </Button>
               <Button
                 variant="secondary"
                 class="w-full mt-2 bg-blue-700 text-white"

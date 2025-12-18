@@ -4,13 +4,19 @@
 
   import { Button } from "$lib/components/ui/button/index.js";
   // import { Label } from "$lib/components/ui/label/index.js";
+  import { Spinner } from "$lib/components/ui/spinner/index.js";
 
   import { Input } from "$lib/components/ui/input/index.js";
   import * as Card from "$lib/components/ui/card/index.js";
 
   let { data }: PageProps = $props();
 
-  const { form, errors, message, enhance, constraints } = superForm(data.form);
+  function getForm() {
+    return data.form;
+  }
+
+  const { form, errors, message, enhance, delayed, constraints } =
+    superForm(getForm());
 </script>
 
 <svelte:head>
@@ -77,8 +83,9 @@
             </div>
             <div class="mt-4">
               <Button variant="default" type="submit" class="w-full"
-                >Create Account</Button
-              >
+                >Create Account
+                {#if $delayed}<Spinner />{/if}
+              </Button>
               <Button
                 variant="secondary"
                 class="w-full mt-2 bg-blue-700 text-white"
