@@ -19,15 +19,15 @@
         "db:drop": "drizzle-kit drop"
     },
     "devDependencies": {
-        "@internationalized/date": "^3.8.1",
-        "@lucide/svelte": "^0.544.0",
+        "@internationalized/date": "^3.10.0",
+        "@lucide/svelte": "^0.561.0",
         "@sveltejs/adapter-auto": "^7.0.0",
         "@sveltejs/kit": "^2.48.5",
         "@sveltejs/vite-plugin-svelte": "^6.2.1",
         "@tailwindcss/vite": "^4.1.17",
         "@types/node": "^25.0.1",
         "@types/pg": "^8.16.0",
-        "bits-ui": "^2.11.0",
+        "bits-ui": "^2.14.4",
         "clsx": "^2.1.1",
         "drizzle-kit": "^0.31.8",
         "svelte": "^5.43.8",
