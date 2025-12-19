@@ -3,7 +3,7 @@
   import { superForm } from "sveltekit-superforms";
 
   import { Button } from "$lib/components/ui/button/index.js";
-  // import { Label } from "$lib/components/ui/label/index.js";
+  import { Label } from "$lib/components/ui/label/index.js";
   import { Spinner } from "$lib/components/ui/spinner/index.js";
 
   import { Input } from "$lib/components/ui/input/index.js";
@@ -45,7 +45,7 @@
         <form method="POST" use:enhance>
           <div class="flex flex-col gap-6">
             <div class="grid gap-2">
-              <label for="email">Name</label>
+              <Label for="name">Name</Label>
               <Input
                 id="name"
                 type="text"
@@ -57,7 +57,7 @@
               {#if $errors.name}<span class="invalid">{$errors.name}</span>{/if}
             </div>
             <div class="grid gap-2">
-              <label for="email">Email</label>
+              <Label for="email">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -71,7 +71,7 @@
             </div>
             <div class="grid gap-2">
               <div class="flex items-center">
-                <label for="password">Password</label>
+                <Label for="password">Password</Label>
               </div>
               <Input
                 id="password"

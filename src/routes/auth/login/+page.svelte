@@ -3,7 +3,7 @@
   import { superForm } from "sveltekit-superforms";
 
   import { Button } from "$lib/components/ui/button/index.js";
-  // import { Label } from "$lib/components/ui/label/index.js";
+  import { Label } from "$lib/components/ui/label/index.js";
   import { Spinner } from "$lib/components/ui/spinner/index.js";
 
   import { Input } from "$lib/components/ui/input/index.js";
@@ -11,9 +11,7 @@
 
   let { data }: PageProps = $props();
 
-  function getForm() {
-    return data.loginForm;
-  }
+  const getForm = () => data.loginForm;
 
   const { form, errors, message, delayed, enhance, constraints } =
     superForm(getForm());
@@ -43,7 +41,7 @@
         <form method="POST" use:enhance action="?/login">
           <div class="flex flex-col gap-6">
             <div class="grid gap-2">
-              <label for="email">Email</label>
+              <Label for="email">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -57,7 +55,7 @@
             </div>
             <div class="grid gap-2">
               <div class="flex items-center">
-                <label for="password">Password</label>
+                <Label for="password">Password</Label>
               </div>
               <Input
                 id="password"
