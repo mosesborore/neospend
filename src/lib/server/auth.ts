@@ -19,7 +19,7 @@ export const lucia = new Lucia(adapter, {
   sessionCookie: {
     attributes: {
       secure: !dev,
-      sameSite: "strict",
+      sameSite: "lax",
     },
   },
   sessionExpiresIn: new TimeSpan(2, "w"),
