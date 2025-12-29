@@ -49,7 +49,7 @@
     </header>
 
     {#if $flash}
-      <section>
+      <section class="mx-4">
         <div class="container mx-auto mt-2" bind:this={alertContainer}>
           <div class="grid w-full max-w-xl items-start gap-4 mx-auto">
             <Alert.Root
@@ -64,7 +64,7 @@
               <Alert.Title>{$flash.message.title}</Alert.Title>
               {#if $flash.message.description}
                 <Alert.Description
-                  >{$flash.message.description}</Alert.Description
+                  >{$flash.message?.description}</Alert.Description
                 >
               {/if}
 
