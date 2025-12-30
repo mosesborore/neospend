@@ -4,7 +4,7 @@ import { redirect } from "sveltekit-flash-message/server";
 
 export const actions: Actions = {
   logout: async (event) => {
-    requireLogin();
+    requireLogin(event);
 
     const session = event.locals.session;
     if (!session) {
@@ -23,7 +23,5 @@ export const actions: Actions = {
     await lucia.invalidateSession(session.id);
     event.locals.user = null;
     event.locals.session = null;
-
-    
   },
 };
