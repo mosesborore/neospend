@@ -38,7 +38,7 @@
           </p>
         {/if}
 
-        <form method="POST" use:enhance action="?/login">
+        <form method="POST" use:enhance>
           <div class="flex flex-col gap-6">
             <div class="grid gap-2">
               <Label for="email">Email</Label>

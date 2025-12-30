@@ -9,16 +9,16 @@ import { redirect } from "sveltekit-flash-message/server";
 
 import { db } from "$lib/server/database/db";
 import { lucia } from "$lib/server/auth";
-import { LoginSchema } from "$lib/validation/schemas";
+import { LoginSchema } from "$lib/schemas/index";
 
-export const load: PageServerLoad = async ({ locals, cookies }) => {
+export const load: PageServerLoad = async (event) => {
   const loginForm = await superValidate(zod4(LoginSchema));
   return { loginForm };
 };
 
 export const actions = {
-  login: async ({ locals, request, cookies }) => {
-    const loginForm = await superValidate(request, zod4(LoginSchema));
+  default: async (event) => {
+    const loginForm = await superValidate(event.request, zod4(LoginSchema));
 
     if (!loginForm.valid) {
       return message(loginForm, "Invalid. Please fill the form correctly.");
@@ -52,13 +52,20 @@ export const actions = {
     const session = await lucia.createSession(existingUser.id, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
 
-    cookies.set(sessionCookie.name, sessionCookie.value, {
+    event.cookies.set(sessionCookie.name, sessionCookie.value, {
       path: ".",
       ...sessionCookie.attributes,
     });
 
     const userName =
       existingUser.name.charAt(0).toUpperCase() + existingUser.name.slice(1);
+
+    const redirectTo = event.url.searchParams.get("next");
+
+    if (redirectTo) {
+      // prepend a / to force it to be within out domain
+      redirect(302, `/${redirectTo.slice(1)}`);
+    }
 
     return redirect(
       "/",
@@ -69,7 +76,7 @@ export const actions = {
           description: "",
         },
       },
-      cookies
+      event.cookies
     );
   },
 } satisfies Actions;
