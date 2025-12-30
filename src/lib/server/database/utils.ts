@@ -20,7 +20,7 @@ export const insertNewUser = async (user: UserSchema) => {
 };
 
 export const getAllUsers = async () => {
-  return await db.select({
+  return db.select({
     id: userTable.id,
     name: userTable.name,
     email: userTable.email,
