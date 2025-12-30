@@ -6,7 +6,21 @@
   //Menu items
 
   const items = [
-    { title: "Dashboard", url: "#", icon: HouseIcon },
+    {
+      title: "Dashboard",
+      url: "/",
+      icon: HouseIcon,
+    },
+    {
+      title: "Transactions",
+      url: "/transactions",
+      icon: SettingsIcon,
+    },
+    {
+      title: "Accounts",
+      url: "/accounts",
+      icon: SettingsIcon,
+    },
     {
       title: "Settings",
       url: "#",
