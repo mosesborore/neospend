@@ -7,6 +7,8 @@ import { db } from "./database/db";
 import { sessionTable, userTable } from "./database/schema";
 import { redirect } from "sveltekit-flash-message/server";
 import { getRequestEvent } from "$app/server";
+import { handleLoginRedirect } from "$lib/utils";
+import type { RequestEvent } from "@sveltejs/kit";
 const adapter = new DrizzlePostgreSQLAdapter(db, sessionTable, userTable);
 
 export const lucia = new Lucia(adapter, {
@@ -37,23 +39,20 @@ interface DatabaseUserAttributes {
   name: string;
 }
 
-export function requireLogin() {
-  const event = getRequestEvent();
-  const { locals } = event;
-
-  if (!locals.user) {
+export function requireLogin(event: RequestEvent) {
+  if (!event.locals.user) {
+    const nextTo = handleLoginRedirect(event);
     return redirect(
-      "/auth/login",
+      nextTo,
       {
         type: "success",
         message: {
-          title: "Please login first.",
-          description: "",
+          title: "You're required to be logged in to access the page.",
         },
       },
       event.cookies
     );
   }
 
-  return locals.user;
+  return event.locals.user;
 }
