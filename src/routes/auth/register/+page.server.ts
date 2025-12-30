@@ -2,11 +2,11 @@ import type { Actions, PageServerLoad } from "./$types";
 import { redirect } from "sveltekit-flash-message/server";
 import { message, superValidate } from "sveltekit-superforms";
 import { zod4 } from "sveltekit-superforms/adapters";
-import { hash, verify } from "@node-rs/argon2";
+import { hash } from "@node-rs/argon2";
 import { generateIdFromEntropySize } from "lucia";
 import { lucia } from "$lib/server/auth";
 
-import { RegisterUserZodSchema } from "$lib/validation/schemas";
+import { RegisterUserZodSchema } from "$lib/schemas/index";
 import { checkIfEmailExists, insertNewUser } from "$lib/server/database/utils";
 
 export const load: PageServerLoad = async () => {
