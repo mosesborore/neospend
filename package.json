@@ -4,7 +4,7 @@
     "version": "0.0.1",
     "type": "module",
     "scripts": {
-        "dev": "vite dev",
+        "dev": "vite dev --host",
         "build": "vite build",
         "preview": "vite preview",
         "prepare": "svelte-kit sync || echo ''",
@@ -50,6 +50,7 @@
         "dotenv": "^17.2.3",
         "drizzle-orm": "^0.45.1",
         "drizzle-zod": "^0.8.3",
+        "formsnap": "^2.0.1",
         "lucia": "^3.2.2",
         "mode-watcher": "^1.1.0",
         "pg": "^8.16.3"
