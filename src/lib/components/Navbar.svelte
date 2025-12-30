@@ -16,7 +16,7 @@
       {#if isAuthenticated}
         <NavigationMenu.Item>
           <NavigationMenu.Link>
-            <form method="post" action="?/logout" use:enhance>
+            <form method="post" action="/?/logout" use:enhance>
               <button type="submit" class="text-sm hover:underline"
                 >Sign out</button
               >
