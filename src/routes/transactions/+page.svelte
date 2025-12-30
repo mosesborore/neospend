@@ -1,11 +1,10 @@
 <script lang="ts">
-  import { Button, buttonVariants } from "$lib/components/ui/button/index.js";
+  import { Button } from "$lib/components/ui/button/index.js";
   import { Input } from "$lib/components/ui/input/index.js";
   import * as Field from "$lib/components/ui/field/index.js";
   import * as Select from "$lib/components/ui/select/index.js";
   import { Textarea } from "$lib/components/ui/textarea";
   import { useSidebar } from "$lib/components/ui/sidebar";
-  import * as Dialog from "$lib/components/ui/dialog/index.js";
   import * as RadioGroup from "$lib/components/ui/radio-group/index.js";
 
   import type { SelectInputOption, Transaction } from "$lib/types";
@@ -14,14 +13,12 @@
   import TransferForm from "$lib/components/transfer-form.svelte";
   import type { PageProps } from "./$types";
   import { superForm } from "sveltekit-superforms";
-  import SuperDebug from "sveltekit-superforms";
 
   let sidebar = useSidebar();
 
   let { data }: PageProps = $props();
 
   const getTransactionForm = () => data.addTransactionForm;
-  const getAccountForm = () => data.accountForm;
 
   let {
     form: transactionForm,
@@ -34,16 +31,6 @@
       console.log("Something went wrong: ", result);
     },
   });
-
-  let { form: accountForm, constraints: accountConstraints } = superForm(
-    getAccountForm(),
-    {
-      resetForm: true,
-      onError: ({ result }) => {
-        console.log("Something went wrong: ", result);
-      },
-    }
-  );
 
   const getAccounts = () => {
     let c: SelectInputOption[] = [];
@@ -355,7 +342,6 @@
           </form>
         {/if}
 
-        <SuperDebug data={$transactionForm} />
       </div>
     </section>
 
@@ -367,44 +353,6 @@
       </div>
       <div>
         <h2 class="mb-4 text-muted-foreground font-semibold">Transfers</h2>
-        <Dialog.Root>
-          <Dialog.Trigger class={buttonVariants({ variant: "outline" })}
-            >Add Account</Dialog.Trigger
-          >
-
-          <Dialog.Content>
-            <Dialog.Header>
-              <Dialog.Title>Add Account</Dialog.Title>
-            </Dialog.Header>
-            <div class="max-w-md w-full mx-auto">
-              <form class="grid gap-4" action="?/addAccount" method="post">
-                <Field.Group>
-                  <Field.Field>
-                    <Field.Label for="name">Account Name</Field.Label>
-                    <Input
-                      name="name"
-                      bind:value={$accountForm.name}
-                      {...$accountConstraints.name}
-                    />
-                  </Field.Field>
-                  <Field.Field>
-                    <Field.Label for="balance">Initial Balance</Field.Label>
-                    <Input
-                      type="number"
-                      name="balance"
-                      bind:value={$accountForm.balance}
-                      {...$accountConstraints.balance}
-                    />
-                  </Field.Field>
-                </Field.Group>
-
-                <Dialog.Footer>
-                  <Button type="submit" class="w-full">Save</Button>
-                </Dialog.Footer>
-              </form>
-            </div>
-          </Dialog.Content>
-        </Dialog.Root>
 
         <TransactionList {transactions} />
       </div>
