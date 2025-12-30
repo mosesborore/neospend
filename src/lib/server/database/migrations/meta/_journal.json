@@ -22,6 +22,20 @@
       "when": 1766155157252,
       "tag": "0002_wealthy_songbird",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1766155727284,
+      "tag": "0003_daffy_red_wolf",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1766169984930,
+      "tag": "0004_fantastic_cerebro",
+      "breakpoints": true
     }
   ]
 }
