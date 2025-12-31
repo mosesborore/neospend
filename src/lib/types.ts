@@ -14,7 +14,7 @@ export const LoginSchema = z.object({
   password: z.string().min(2).max(50),
 });
 
-export type Transaction = {
+export type TransactionType = {
   id?: string;
   name: string;
   type: string;

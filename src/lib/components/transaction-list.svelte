@@ -1,8 +1,8 @@
 <script lang="ts">
-  import type { Transaction } from "$lib/types";
+  import type { TransactionType } from "$lib/types";
   import TransactionItem from "./transaction-item.svelte";
 
-  let { transactions }: { transactions: Transaction[] } = $props();
+  let { transactions }: { transactions: TransactionType[] } = $props();
 </script>
 
 <div class="flex flex-col gap-4 overflow-y-auto max-h-[80svh]">
