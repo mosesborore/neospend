@@ -1,11 +1,11 @@
 <script lang="ts">
   import * as Item from "$lib/components/ui/item/index.js";
   import { Button } from "$lib/components/ui/button/index.js";
-  import Trash2 from "@lucide/svelte/icons/trash-2";
+  import MoreVertical from "@lucide/svelte/icons/more-horizontal";
   import Dot from "@lucide/svelte/icons/dot";
-  import type { Transaction } from "$lib/types";
+  import type { TransactionType } from "$lib/types";
 
-  let { transaction }: { transaction: Transaction } = $props();
+  let { transaction }: { transaction: TransactionType } = $props();
 </script>
 
 <div id="item">
@@ -20,8 +20,8 @@
     </Item.Content>
     <Item.Actions class="flex gap-4 items-center">
       <span class="font-semibold text-base">{transaction.amount}</span>
-      <Button variant="outline" size="sm">
-        <Trash2 class="size-4" color="red" />
+      <Button variant="ghost" size="icon">
+        <MoreVertical />
       </Button>
     </Item.Actions>
   </Item.Root>
