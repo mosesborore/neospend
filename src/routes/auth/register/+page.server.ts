@@ -6,17 +6,17 @@ import { hash } from "@node-rs/argon2";
 import { generateIdFromEntropySize } from "lucia";
 import { lucia } from "$lib/server/auth";
 
-import { RegisterUserZodSchema } from "$lib/schemas/index";
+import { RegisterSchema } from "$lib/types";
 import { checkIfEmailExists, insertNewUser } from "$lib/server/database/utils";
 
 export const load: PageServerLoad = async () => {
-  const form = await superValidate(zod4(RegisterUserZodSchema));
+  const form = await superValidate(zod4(RegisterSchema));
   return { form };
 };
 
 export const actions = {
   default: async ({ request, cookies }) => {
-    const form = await superValidate(request, zod4(RegisterUserZodSchema));
+    const form = await superValidate(request, zod4(RegisterSchema));
     console.log(form);
 
     if (!form.valid) {

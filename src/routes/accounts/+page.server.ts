@@ -4,14 +4,15 @@ import { message, superValidate } from "sveltekit-superforms";
 
 import { db } from "$lib/server/database/db";
 import { requireLogin } from "$lib/server/auth";
-import { accountInsertZodSchema } from "$lib/schemas/index";
+import { CreateAccountSchema } from "$lib/types";
 import { account as accountTable } from "$lib/server/database/schema";
 import { setFlash } from "sveltekit-flash-message/server";
+import { zod4 } from "sveltekit-superforms/adapters";
 
 export const load: PageServerLoad = async (event) => {
   const user = requireLogin(event);
 
-  const form = await superValidate(accountInsertZodSchema);
+  const form = await superValidate(zod4(CreateAccountSchema));
 
   const accounts = await db
     .select()
@@ -25,7 +26,7 @@ export const actions = {
   addAccount: async (event) => {
     const user = requireLogin(event);
 
-    const form = await superValidate(event.request, accountInsertZodSchema);
+    const form = await superValidate(event.request, zod4(CreateAccountSchema));
 
     if (!form.valid) {
       return message(form, "Please fill the form properly.");

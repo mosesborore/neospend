@@ -9,7 +9,7 @@ import { redirect } from "sveltekit-flash-message/server";
 
 import { db } from "$lib/server/database/db";
 import { lucia } from "$lib/server/auth";
-import { LoginSchema } from "$lib/schemas/index";
+import { LoginSchema } from "$lib/types";
 
 export const load: PageServerLoad = async (event) => {
   const loginForm = await superValidate(zod4(LoginSchema));
