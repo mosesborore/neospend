@@ -27,6 +27,8 @@
       icon: SettingsIcon,
     },
   ];
+
+  let currentPath = $state("/");
 </script>
 
 <Sidebar.Root>
@@ -46,7 +48,10 @@
       <Sidebar.Menu>
         {#each items as item (item.title)}
           <Sidebar.MenuItem>
-            <Sidebar.MenuButton>
+            <Sidebar.MenuButton
+              onclick={() => (currentPath = item.url)}
+              isActive={currentPath === item.url}
+            >
               {#snippet child({ props })}
                 <a href={item.url} {...props}>
                   <item.icon />
