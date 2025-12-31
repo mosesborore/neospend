@@ -7,9 +7,10 @@
   import { useSidebar } from "$lib/components/ui/sidebar";
   import * as RadioGroup from "$lib/components/ui/radio-group/index.js";
 
-  import type { SelectInputOption, Transaction } from "$lib/types";
+  import type { TransactionType, Transfer } from "$lib/types";
   import { cn } from "$lib/utils";
   import TransactionList from "$lib/components/transaction-list.svelte";
+  import TransferList from "$lib/components/transfer-list.svelte";
   import TransferForm from "$lib/components/transfer-form.svelte";
   import type { PageProps } from "./$types";
   import { superForm } from "sveltekit-superforms";
@@ -25,22 +26,17 @@
     message,
     constraints,
     enhance,
+    errors,
   } = superForm(getTransactionForm(), {
     resetForm: true,
-    onError: ({ result }) => {
-      console.log("Something went wrong: ", result);
+    onUpdated: ({ form }) => {
+      if (form.valid) {
+        console.log(form.data);
+      }
     },
   });
 
-  const getAccounts = () => {
-    let c: SelectInputOption[] = [];
-
-    data.accounts.forEach((a) => {
-      c.push({ value: a.id, label: a.name });
-    });
-
-    return c;
-  };
+  const getAccounts = () => data.accountOptions;
 
   const accounts = getAccounts();
 
@@ -106,7 +102,7 @@
       "Choose account"
   );
 
-  let transactions = $state<Transaction[]>([]);
+  let transactions = $state<TransactionType[]>([]);
 
   const transactionTypeLabel = $derived(
     transactionTypes.find((t) => t.value === $transactionForm.type)?.label ??
@@ -129,10 +125,12 @@
   );
   // TRANSFERRING
   let isTransfer = $derived($transactionForm.type === "transfer");
+
+  let transfers = $state<Transfer[]>([]);
 </script>
 
 <svelte:head>
-  <title>Register</title>
+  <title>Transactions</title>
 </svelte:head>
 
 <div>
@@ -159,13 +157,14 @@
         <!-- <h2 class="text-muted-foreground font-semibold">Add Transaction</h2> -->
 
         <Field.Set>
-          <Field.Label for="">Transaction Type</Field.Label>
+          <Field.Label for="transactionTypeRadio">Transaction Type</Field.Label>
           <Field.Description
             >Select the type of this transaction.</Field.Description
           >
           <RadioGroup.Root
             bind:value={$transactionForm.type}
             class="grid grid-cols-3 gap-4"
+            name="transactionTypeRadio"
           >
             <Field.Label for="expense-type">
               <Field.Field orientation="horizontal">
@@ -194,22 +193,12 @@
           </RadioGroup.Root>
         </Field.Set>
 
-        <p class="text-muted-foreground font-semibold">
-          Fill the fields below.
-        </p>
-
         {#if isTransfer}
-          <TransferForm accountOptions={accounts} />
+          <TransferForm accountOptions={accounts} {transfers} />
         {:else}
           <div class="w-full">
-            <h2 class="text-foreground font-semibold mb-4 text-sm">
-              Transaction Details
-            </h2>
+            <h2 class="font-semibold mb-2 text-sm">Transaction Details.</h2>
           </div>
-
-          {#if $message}
-            <p class="font-bold">{$message}</p>
-          {/if}
 
           <form
             method="POST"
@@ -229,6 +218,9 @@
                     bind:value={$transactionForm.name}
                     {...$constraints.name}
                   />
+                  {#if $errors.name}
+                    <Field.Description>{$errors.name}</Field.Description>
+                  {/if}
                 </Field.Field>
                 <Field.Group>
                   <div class={cn("grid gap-6")}>
@@ -246,6 +238,9 @@
                           {/each}
                         </Select.Content>
                       </Select.Root>
+                      {#if $errors.type}
+                        <Field.Description>{$errors.type}</Field.Description>
+                      {/if}
                     </Field.Field>
                   </div>
                 </Field.Group>
@@ -265,6 +260,9 @@
                       {/each}
                     </Select.Content>
                   </Select.Root>
+                  {#if $errors.category}
+                    <Field.Description>{$errors.category}</Field.Description>
+                  {/if}
                 </Field.Field>
                 <Field.Set>
                   <Field.Legend>Account</Field.Legend>
@@ -285,6 +283,9 @@
                           {/each}
                         </Select.Content>
                       </Select.Root>
+                      {#if $errors.account}
+                        <Field.Description>{$errors.account}</Field.Description>
+                      {/if}
                     </Field.Field>
                   </Field.Group>
                 </Field.Set>
@@ -301,6 +302,9 @@
                         bind:value={$transactionForm.amount}
                         {...$constraints.amount}
                       />
+                      {#if $errors.amount}
+                        <Field.Description>{$errors.amount}</Field.Description>
+                      {/if}
                     </Field.Field>
                     <Field.Field>
                       <Field.Label for="currency">Currency</Field.Label>
@@ -316,6 +320,10 @@
                           {/each}
                         </Select.Content>
                       </Select.Root>
+                      {#if $errors.currency}
+                        <Field.Description>{$errors.currency}</Field.Description
+                        >
+                      {/if}
                     </Field.Field>
                   </div>
                 </Field.Group>
@@ -332,29 +340,30 @@
                     name="notes"
                     bind:value={$transactionForm.notes}
                   />
+                  {#if $errors.notes}
+                    <Field.Description>{$errors.notes}</Field.Description>
+                  {/if}
                 </Field.Field>
               </Field.Group>
             </Field.Set>
             <Field.Separator />
+            <p>{$message}</p>
             <Field.Field orientation="responsive">
               <Button type="submit" class="max-w-xs mx-auto">Add</Button>
             </Field.Field>
           </form>
         {/if}
-
       </div>
     </section>
 
     <section class="flex gap-12 flex-col">
-      <div>
+      <div id="transactions">
         <h2 class="mb-4 text-muted-foreground font-semibold">Transactions</h2>
-
         <TransactionList {transactions} />
       </div>
-      <div>
+      <div id="transfers">
         <h2 class="mb-4 text-muted-foreground font-semibold">Transfers</h2>
-
-        <TransactionList {transactions} />
+        <TransferList {transfers} />
       </div>
     </section>
   </div>
