@@ -2,7 +2,7 @@ import { message, superValidate } from "sveltekit-superforms";
 import type { Actions, PageServerLoad } from "./$types";
 
 import { CreateTransactionSchema, type SelectInputOption } from "$lib/types";
-import { account as accountTable } from "$lib/server/database/schema";
+import { accounts as accountTable } from "$lib/server/database/schema";
 import { db } from "$lib/server/database/db";
 import { requireLogin } from "$lib/server/auth";
 import { eq } from "drizzle-orm";
