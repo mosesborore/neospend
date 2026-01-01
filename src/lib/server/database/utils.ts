@@ -1,8 +1,9 @@
 import { eq } from "drizzle-orm";
 
-import type { UserSchema } from "./schema";
 import { db } from "./db";
-import { userTable } from "./schema";
+import { users as userTable } from "./schema";
+
+type UserInsertSchema = typeof userTable.$inferInsert;
 
 export const checkIfEmailExists = async (email: string) => {
   const queryResult = await db
@@ -15,7 +16,7 @@ export const checkIfEmailExists = async (email: string) => {
   return queryResult.length > 0;
 };
 
-export const insertNewUser = async (user: UserSchema) => {
+export const insertNewUser = async (user: UserInsertSchema) => {
   return await db.insert(userTable).values(user);
 };
 
