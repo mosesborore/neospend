@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1765631574589,
-      "tag": "0000_0001_initial",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1765824469789,
-      "tag": "0001_odd_pete_wisdom",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1766155157252,
-      "tag": "0002_wealthy_songbird",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1766155727284,
-      "tag": "0003_daffy_red_wolf",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1766169984930,
-      "tag": "0004_fantastic_cerebro",
+      "when": 1767277299230,
+      "tag": "0000_absent_firestar",
       "breakpoints": true
     }
   ]
