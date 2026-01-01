@@ -4,6 +4,7 @@
   import * as Field from "$lib/components/ui/field/index.js";
   import * as Select from "$lib/components/ui/select/index.js";
   import { Textarea } from "$lib/components/ui/textarea";
+  import type { Transfer } from "$lib/types";
 
   interface AccountOption {
     value: string;
@@ -11,6 +12,7 @@
   }
   interface TransferFormProps {
     accountOptions: AccountOption[];
+    transfers: Transfer[];
   }
 
   const currencies = [
@@ -21,7 +23,7 @@
     { value: "cad", label: "Canadian Dollar" },
   ];
 
-  let { accountOptions }: TransferFormProps = $props();
+  let { accountOptions, transfers }: TransferFormProps = $props();
 
   let fromAccount = $state("");
   let toAccount = $state("");
@@ -46,6 +48,16 @@
   const toAccountsOptions = $derived(
     accountOptions.filter((a) => a.value !== fromAccount)
   );
+
+  function handleSubmit(e: SubmitEvent) {
+    e.preventDefault();
+    transfers.push({
+      id: "3",
+      fromAccount: "Bank",
+      toAccount: "MPESA",
+      amount: 400,
+    });
+  }
 </script>
 
 <section id="transfer-form shadow-md">
@@ -55,7 +67,11 @@
     </h2>
   </div>
 
-  <form class="w-full max-w-4xl flex flex-col gap-6">
+  <form
+    class="w-full max-w-4xl flex flex-col gap-6"
+    method="post"
+    onsubmit={handleSubmit}
+  >
     <Field.Set>
       <Field.Group>
         <div class="grid grid-cols-2 gap-4">
