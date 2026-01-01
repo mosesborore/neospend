@@ -4,12 +4,12 @@ import { Lucia, TimeSpan } from "lucia";
 import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
 
 import { db } from "./database/db";
-import { sessionTable, userTable } from "./database/schema";
+import { session, users } from "./database/schema";
 import { redirect } from "sveltekit-flash-message/server";
-import { getRequestEvent } from "$app/server";
 import { handleLoginRedirect } from "$lib/utils";
 import type { RequestEvent } from "@sveltejs/kit";
-const adapter = new DrizzlePostgreSQLAdapter(db, sessionTable, userTable);
+
+const adapter = new DrizzlePostgreSQLAdapter(db, session, users);
 
 export const lucia = new Lucia(adapter, {
   getUserAttributes: (attributes) => {
