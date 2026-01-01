@@ -52,7 +52,7 @@ export const actions = {
         ...sessionCookie.attributes,
       });
     } catch {
-      return message(form, "An error has occured while loggin in.");
+      return message(form, "An error has occurred while logging in.");
     }
 
     return redirect(
