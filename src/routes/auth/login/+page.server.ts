@@ -4,7 +4,7 @@ import { verify } from "@node-rs/argon2";
 import { message, superValidate } from "sveltekit-superforms";
 import { zod4 } from "sveltekit-superforms/adapters";
 import { eq } from "drizzle-orm";
-import { userTable } from "$lib/server/database/schema";
+import { users as userTable } from "$lib/server/database/schema";
 import { redirect } from "sveltekit-flash-message/server";
 
 import { db } from "$lib/server/database/db";
