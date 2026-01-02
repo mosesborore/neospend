@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const TRANSACTIONTYPES = ["income", "expense", "transfer"];
+const TRANSACTIONTYPES = ["income", "expense", "transfer"] as const;
 
 export const RegisterSchema = z.object({
   email: z.email(),
