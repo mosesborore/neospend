@@ -4,14 +4,10 @@
   import * as Field from "$lib/components/ui/field/index.js";
   import * as Select from "$lib/components/ui/select/index.js";
   import { Textarea } from "$lib/components/ui/textarea";
-  import type { Transfer } from "$lib/types";
+  import type { SelectInputOption, Transfer } from "$lib/types";
 
-  interface AccountOption {
-    value: string;
-    label: string;
-  }
   interface TransferFormProps {
-    accountOptions: AccountOption[];
+    accountOptions: SelectInputOption[];
     transfers: Transfer[];
   }
 
