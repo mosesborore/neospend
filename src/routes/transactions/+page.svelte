@@ -55,40 +55,6 @@
     },
   ];
 
-  const categories = [
-    {
-      type: "expense",
-      options: [
-        {
-          value: "rent",
-          label: "Rent",
-        },
-        {
-          value: "shopping",
-          label: "Shopping",
-        },
-      ],
-    },
-    {
-      type: "income",
-      options: [
-        {
-          value: "salary",
-          label: "Salary",
-        },
-      ],
-    },
-    {
-      type: "transfer",
-      options: [
-        {
-          value: "transfer",
-          label: "Transfer",
-        },
-      ],
-    },
-  ];
-
   const currencies = [
     { value: "kes", label: "Kenyan Shilling" },
     { value: "usd", label: "US Dollar" },
@@ -110,7 +76,9 @@
   );
 
   const categoryOptions = $derived(
-    categories.find((c) => c.type === $transactionForm.type)?.options ?? []
+    $transactionForm.type === "expense"
+      ? data.expenseOptions
+      : data.incomeOptions
   );
   const categoryLabel = $derived.by(() => {
     return (

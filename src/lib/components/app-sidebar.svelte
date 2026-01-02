@@ -1,6 +1,7 @@
 <script lang="ts">
   import HouseIcon from "@lucide/svelte/icons/house";
   import SettingsIcon from "@lucide/svelte/icons/settings";
+  import TagIcon from "@lucide/svelte/icons/tag";
   import * as Sidebar from "$lib/components/ui/sidebar/index.js";
   import * as Avatar from "$lib/components/ui/avatar/index.js";
   //Menu items
@@ -11,20 +12,30 @@
       url: "/",
       icon: HouseIcon,
     },
+
+    {
+      title: "Settings",
+      url: "#",
+      icon: SettingsIcon,
+    },
+  ];
+
+  const transactionAttributes = [
     {
       title: "Transactions",
       url: "/transactions",
       icon: SettingsIcon,
     },
+
     {
       title: "Accounts",
       url: "/accounts",
       icon: SettingsIcon,
     },
     {
-      title: "Settings",
-      url: "#",
-      icon: SettingsIcon,
+      title: "Categories",
+      url: "/categories",
+      icon: TagIcon,
     },
   ];
 
@@ -42,29 +53,50 @@
     </Sidebar.Menu>
   </Sidebar.Header>
   <Sidebar.Content>
-    <Sidebar.Group />
-    <Sidebar.GroupLabel>Overview</Sidebar.GroupLabel>
-    <Sidebar.GroupContent>
-      <Sidebar.Menu>
-        {#each items as item (item.title)}
-          <Sidebar.MenuItem>
-            <Sidebar.MenuButton
-              onclick={() => (currentPath = item.url)}
-              isActive={currentPath === item.url}
-            >
-              {#snippet child({ props })}
-                <a href={item.url} {...props}>
-                  <item.icon />
-                  <span>{item.title}</span>
-                </a>
-              {/snippet}
-            </Sidebar.MenuButton>
-          </Sidebar.MenuItem>
-        {/each}
-      </Sidebar.Menu>
-    </Sidebar.GroupContent>
-
-    <Sidebar.Group />
+    <Sidebar.Group>
+      <Sidebar.GroupLabel>Overview</Sidebar.GroupLabel>
+      <Sidebar.GroupContent>
+        <Sidebar.Menu>
+          {#each items as item (item.title)}
+            <Sidebar.MenuItem>
+              <Sidebar.MenuButton
+                onclick={() => (currentPath = item.url)}
+                isActive={currentPath === item.url}
+              >
+                {#snippet child({ props })}
+                  <a href={item.url} {...props}>
+                    <item.icon />
+                    <span>{item.title}</span>
+                  </a>
+                {/snippet}
+              </Sidebar.MenuButton>
+            </Sidebar.MenuItem>
+          {/each}
+        </Sidebar.Menu>
+      </Sidebar.GroupContent>
+    </Sidebar.Group>
+    <Sidebar.Group>
+      <Sidebar.GroupLabel>Transaction Attributes</Sidebar.GroupLabel>
+      <Sidebar.GroupContent>
+        <Sidebar.Menu>
+          {#each transactionAttributes as attribute (attribute.title)}
+            <Sidebar.MenuItem>
+              <Sidebar.MenuButton
+                onclick={() => (currentPath = attribute.url)}
+                isActive={currentPath === attribute.url}
+              >
+                {#snippet child({ props })}
+                  <a href={attribute.url} {...props}>
+                    <attribute.icon />
+                    <span>{attribute.title}</span>
+                  </a>
+                {/snippet}
+              </Sidebar.MenuButton>
+            </Sidebar.MenuItem>
+          {/each}
+        </Sidebar.Menu>
+      </Sidebar.GroupContent>
+    </Sidebar.Group>
   </Sidebar.Content>
   <Sidebar.Footer>
     <Avatar.Root>
