@@ -45,7 +45,7 @@ export const CreateTransactionSchema = z.object({
   name: z.string().min(1),
   amount: z.number().default(0),
   type: z.enum(TRANSACTIONTYPES).default("expense"),
-  category: z.number(),
+  category: z.string(),
   account: z.string(),
   currency: z.string().default("kes"),
   notes: z.string().default(""),
@@ -65,6 +65,6 @@ export type Transfer = {
 };
 
 export type SelectInputOption = {
-  value: string | number;
+  value: string;
   label: string;
 };
