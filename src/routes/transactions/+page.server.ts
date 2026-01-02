@@ -16,7 +16,7 @@ const getSelectOptions = (options: Options[]) => {
   let option: SelectInputOption[] = [];
 
   options.forEach((o) => {
-    option.push({ value: o.id, label: o.name });
+    option.push({ value: o.id.toString(), label: o.name });
   });
 
   return option;
