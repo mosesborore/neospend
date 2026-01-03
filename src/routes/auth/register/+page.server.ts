@@ -44,23 +44,19 @@ export const actions = {
         email: form.data.email,
         password: passwordHash,
       });
-      const session = await lucia.createSession(userId, {});
-      const sessionCookie = lucia.createSessionCookie(session.id);
-
-      cookies.set(sessionCookie.name, sessionCookie.value, {
-        path: ".",
-        ...sessionCookie.attributes,
-      });
     } catch {
-      return message(form, "An error has occurred while logging in.");
+      return message(
+        form,
+        "An error has occurred while creating your account."
+      );
     }
 
     return redirect(
-      "/",
+      "/auth/login",
       {
         type: "success",
         message: {
-          title: `Welcome, ${form.data.name}. Account created successfully.`,
+          title: `Account created successfully. Please login with your credentials.`,
           description: "",
         },
       },
