@@ -1,14 +1,18 @@
-import { z } from "zod";
+import { z } from "zod/v4";
 
 const TRANSACTIONTYPES = ["income", "expense", "transfer"] as const;
 
-export const RegisterSchema = z.object({
-  email: z.email(),
-  name: z.string().min(2).max(80),
-  password: z.string().min(8).max(50),
-  // confirm: z.string().min(8).max(50),
-});
-
+export const RegisterSchema = z
+  .object({
+    email: z.email(),
+    name: z.string().min(2).max(80),
+    password: z.string().min(8).max(50),
+    confirm: z.string().min(8).max(50),
+  })
+  .refine((data) => data.password === data.confirm, {
+    message: "Passwords do not match",
+    path: ["confirm"],
+  });
 export const LoginSchema = z.object({
   email: z.email(),
   password: z.string().min(2).max(50),

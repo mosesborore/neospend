@@ -26,7 +26,7 @@ export const actions = {
     const existingUser = await checkIfEmailExists(form.data.email);
 
     if (existingUser) {
-      return message(form, "User already exists. Go to login page.");
+      return message(form, "User already exists.");
     }
 
     const userId = generateIdFromEntropySize(10);

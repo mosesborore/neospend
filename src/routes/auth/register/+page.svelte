@@ -2,12 +2,14 @@
   import type { PageProps } from "./$types";
   import { superForm } from "sveltekit-superforms";
 
-  import { Button } from "$lib/components/ui/button/index.js";
-  import { Label } from "$lib/components/ui/label/index.js";
+  import { Button, buttonVariants } from "$lib/components/ui/button/index.js";
+  import * as Field from "$lib/components/ui/field/index.js";
   import { Spinner } from "$lib/components/ui/spinner/index.js";
+  import * as Item from "$lib/components/ui/item/index.js";
 
   import { Input } from "$lib/components/ui/input/index.js";
   import * as Card from "$lib/components/ui/card/index.js";
+  import { resolve } from "$app/paths";
 
   let { data }: PageProps = $props();
 
@@ -25,82 +27,101 @@
 
 <main>
   <div class="flex justify-center items-center min-h-[70vh]">
-    <Card.Root class="w-full max-w-sm">
+    <Card.Root class="w-full max-w-md">
       <Card.Header>
         <Card.Title>Create an account</Card.Title>
         <Card.Description
           >Enter your details below to create an account</Card.Description
         >
         <Card.Action>
-          <Button variant="link">Login</Button>
+          <a
+            class={buttonVariants({ variant: "link" })}
+            href={resolve("/auth/login")}>Login</a
+          >
         </Card.Action>
       </Card.Header>
-      <Card.Content>
+      <Card.Content class="grid gap-y-8">
         {#if $message}
-          <p class="text-sm mb-2 text-center text-muted-foreground">
-            {$message}
-          </p>
+          <Item.Root variant="outline" size="sm">
+            <Item.Content>
+              <Item.Title class="text-muted-foreground">{$message}</Item.Title>
+            </Item.Content>
+          </Item.Root>
         {/if}
 
         <form method="POST" use:enhance>
-          <div class="flex flex-col gap-6">
-            <div class="grid gap-2">
-              <Label for="name">Name</Label>
-              <Input
-                id="name"
-                type="text"
-                name="name"
-                bind:value={$form.name}
-                placeholder="Enter your name"
-                {...$constraints.name}
-              />
-              {#if $errors.name}<span class="invalid">{$errors.name}</span>{/if}
-            </div>
-            <div class="grid gap-2">
-              <Label for="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                name="email"
-                bind:value={$form.email}
-                placeholder="m@example.com"
-                {...$constraints.email}
-              />
-              {#if $errors.email}<span class="invalid">{$errors.email}</span
-                >{/if}
-            </div>
-            <div class="grid gap-2">
-              <div class="flex items-center">
-                <Label for="password">Password</Label>
-              </div>
-              <Input
-                id="password"
-                type="password"
-                name="password"
-                bind:value={$form.password}
-                {...$constraints.password}
-              />
-            </div>
-            <div class="mt-4">
-              <Button variant="default" type="submit" class="w-full"
-                >Create Account
-                {#if $delayed}<Spinner />{/if}
-              </Button>
-              <Button
-                variant="secondary"
-                class="w-full mt-2 bg-blue-700 text-white"
-                >Create via Google</Button
-              >
-            </div>
+          <Field.Set>
+            <Field.Group>
+              <Field.Field>
+                <Field.Label for="name">Names</Field.Label>
+                <Input
+                  id="name"
+                  type="text"
+                  name="name"
+                  bind:value={$form.name}
+                  placeholder="Enter your name"
+                  {...$constraints.name}
+                />
+                {#if $errors.name}
+                  <Field.Description>{$errors.name}</Field.Description>
+                {/if}
+              </Field.Field>
+              <Field.Field>
+                <Field.Label for="email">Email</Field.Label>
+
+                <Input
+                  id="email"
+                  type="email"
+                  name="email"
+                  placeholder="email@example.com"
+                  bind:value={$form.email}
+                  {...$constraints.email}
+                />
+                {#if $errors.email}
+                  <Field.Description>{$errors.email}</Field.Description>
+                {/if}
+              </Field.Field>
+              <Field.Field>
+                <Field.Label for="password">Password</Field.Label>
+
+                <Input
+                  id="password"
+                  type="password"
+                  name="password"
+                  placeholder="••••••••"
+                  bind:value={$form.password}
+                  {...$constraints.password}
+                />
+                {#if $errors.password}
+                  <Field.Description>{$errors.password}</Field.Description>
+                {/if}
+              </Field.Field>
+              <Field.Field>
+                <Field.Label for="confirm">Confirm Password</Field.Label>
+
+                <Input
+                  id="confirm"
+                  type="password"
+                  name="confirm"
+                  placeholder="••••••••"
+                  bind:value={$form.confirm}
+                  {...$constraints.confirm}
+                />
+                {#if $errors.confirm}
+                  <Field.Description>{$errors.confirm}</Field.Description>
+                {/if}
+              </Field.Field>
+            </Field.Group>
+          </Field.Set>
+
+          <div class="mt-4">
+            <Button type="submit" class="w-full"
+              >Create Account
+              {#if $delayed}<Spinner />{/if}
+            </Button>
           </div>
         </form>
       </Card.Content>
-      <!-- <Card.Footer class="flex-col gap-2">
-        <Button variant="default" type="submit" class="w-full"
-          >Create Account</Button
-        >
-        <Button variant="secondary" class="w-full">Create with Google</Button>
-      </Card.Footer> -->
     </Card.Root>
   </div>
 </main>
