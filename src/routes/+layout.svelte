@@ -18,44 +18,28 @@
   <link rel="icon" href={favicon} />
 </svelte:head>
 
-<nav class="flex items-center h-10 p-4">
-  <div>
-    <span>NeoSpend</span>
-  </div>
-
-  <div class="ms-auto text-sm">
-    <NavigationMenu.Root>
+<div class="container mx-auto">
+  <nav class="flex items-center h-10 py-4">
+    <span class="text-lg font-semibold">NeoSpend</span>
+    <NavigationMenu.Root class="ms-auto">
       <NavigationMenu.List class="gap-x-2">
         <NavigationMenu.Item>
           <NavigationMenu.Link href="/">Home</NavigationMenu.Link>
         </NavigationMenu.Item>
-        {#if isAuthenticated}
-          <NavigationMenu.Item>
-            <NavigationMenu.Link>
-              <form method="post" action="/app?/logout" use:enhance>
-                <button type="submit" class="text-sm hover:underline"
-                  >Sign out</button
-                >
-              </form>
-            </NavigationMenu.Link>
-          </NavigationMenu.Item>
-        {:else}
-          <NavigationMenu.Item>
-            <NavigationMenu.Link href="/auth/login">Login</NavigationMenu.Link>
-          </NavigationMenu.Item>
-
-          <NavigationMenu.Item>
-            <NavigationMenu.Link href="/auth/register">
-              Register
-            </NavigationMenu.Link>
-          </NavigationMenu.Item>
-        {/if}
+        <NavigationMenu.Item>
+          <NavigationMenu.Link href="/auth/login">Login</NavigationMenu.Link>
+        </NavigationMenu.Item>
+        <NavigationMenu.Item>
+          <NavigationMenu.Link href="/auth/register">
+            Register
+          </NavigationMenu.Link>
+        </NavigationMenu.Item>
         <NavigationMenu.Item>
           <ThemeToggler />
         </NavigationMenu.Item>
       </NavigationMenu.List>
     </NavigationMenu.Root>
-  </div>
-</nav>
+  </nav>
+</div>
 
 {@render children()}
