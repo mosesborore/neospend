@@ -25,8 +25,8 @@
   <title>Register</title>
 </svelte:head>
 
-<main>
-  <div class="flex justify-center items-center min-h-[70vh]">
+<main class="mt-8">
+  <div class="flex justify-center items-center min-h-[80vh]">
     <Card.Root class="w-full max-w-md">
       <Card.Header>
         <Card.Title>Create an account</Card.Title>
@@ -88,7 +88,7 @@
                   id="password"
                   type="password"
                   name="password"
-                  placeholder="••••••••"
+                  placeholder="Enter password"
                   bind:value={$form.password}
                   {...$constraints.password}
                 />
@@ -103,7 +103,7 @@
                   id="confirm"
                   type="password"
                   name="confirm"
-                  placeholder="••••••••"
+                  placeholder="Enter password again to confirm"
                   bind:value={$form.confirm}
                   {...$constraints.confirm}
                 />

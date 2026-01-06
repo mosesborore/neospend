@@ -1,41 +1,27 @@
 <script lang="ts">
   import * as NavigationMenu from "$lib/components/ui/navigation-menu/index.js";
+
   import ThemeToggler from "./theme-controller.svelte";
-  import { Button } from "$lib/components/ui/button/index.js";
   import { enhance } from "$app/forms";
 
-  let { isAuthenticated }: { isAuthenticated: boolean } = $props();
+  const isAuthenticated = false;
 </script>
 
-<div class="flex items-center justify-end">
+<nav class="flex items-center gap-x-4 h-6 p-2">
   <NavigationMenu.Root>
     <NavigationMenu.List>
       <NavigationMenu.Item>
-        <NavigationMenu.Link href="/">Home</NavigationMenu.Link>
+        <NavigationMenu.Link>
+          <form method="post" action="/app?/logout" use:enhance>
+            <button type="submit" class="text-sm hover:underline"
+              >Log Out</button
+            >
+          </form>
+        </NavigationMenu.Link>
       </NavigationMenu.Item>
-      {#if isAuthenticated}
-        <NavigationMenu.Item>
-          <NavigationMenu.Link>
-            <form method="post" action="/?/logout" use:enhance>
-              <button type="submit" class="text-sm hover:underline"
-                >Sign out</button
-              >
-            </form>
-          </NavigationMenu.Link>
-        </NavigationMenu.Item>
-      {:else}
-        <NavigationMenu.Item>
-          <NavigationMenu.Link href="/auth/login">Login</NavigationMenu.Link>
-        </NavigationMenu.Item>
-        <NavigationMenu.Item>
-          <NavigationMenu.Link href="/auth/register">
-            Register
-          </NavigationMenu.Link>
-        </NavigationMenu.Item>
-      {/if}
       <NavigationMenu.Item>
         <ThemeToggler />
       </NavigationMenu.Item>
     </NavigationMenu.List>
   </NavigationMenu.Root>
-</div>
+</nav>

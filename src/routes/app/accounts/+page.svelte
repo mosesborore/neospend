@@ -29,6 +29,7 @@
     message,
     errors,
     enhance,
+    reset,
     delayed,
   } = superForm(getAccountForm(), {
     resetForm: true,
@@ -36,7 +37,7 @@
       console.log("Something went wrong: ", result);
     },
     onUpdated: () => {
-      console.log("done");
+      console.log("Form submitted.");
     },
   });
 </script>

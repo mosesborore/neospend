@@ -12,6 +12,19 @@ import { lucia } from "$lib/server/auth";
 import { LoginSchema } from "$lib/types";
 
 export const load: PageServerLoad = async (event) => {
+  if (event.locals.user) {
+    return redirect(
+      "/app",
+      {
+        type: "success",
+        message: {
+          title: `You're already logged in.`,
+          description: "",
+        },
+      },
+      event.cookies
+    );
+  }
   const loginForm = await superValidate(zod4(LoginSchema));
   return { loginForm };
 };
@@ -68,7 +81,7 @@ export const actions = {
     }
 
     return redirect(
-      "/",
+      "/app",
       {
         type: "success",
         message: {

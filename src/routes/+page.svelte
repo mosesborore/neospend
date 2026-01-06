@@ -6,7 +6,7 @@
   import * as Card from "$lib/components/ui/card/index.js";
 </script>
 
-<main>
+<main class="container mx-auto">
   <h1>Home Page</h1>
 </main>
 

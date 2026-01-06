@@ -6,10 +6,12 @@
   import * as Avatar from "$lib/components/ui/avatar/index.js";
   //Menu items
 
+  const ROOT_PATH = "/app";
+
   const items = [
     {
       title: "Dashboard",
-      url: "/",
+      url: `${ROOT_PATH}`,
       icon: HouseIcon,
     },
 
@@ -23,18 +25,18 @@
   const transactionAttributes = [
     {
       title: "Transactions",
-      url: "/transactions",
+      url: `${ROOT_PATH}/transactions`,
       icon: SettingsIcon,
     },
 
     {
       title: "Accounts",
-      url: "/accounts",
+      url: `${ROOT_PATH}/accounts`,
       icon: SettingsIcon,
     },
     {
       title: "Categories",
-      url: "/categories",
+      url: `${ROOT_PATH}/categories`,
       icon: TagIcon,
     },
   ];

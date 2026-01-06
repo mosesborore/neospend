@@ -23,7 +23,7 @@
 </svelte:head>
 
 <main>
-  <div class="flex justify-center items-center min-h-[70vh]">
+  <div class="flex justify-center items-center min-h-[80vh]">
     <Card.Root class="w-full max-w-sm">
       <Card.Header>
         <Card.Title>Login</Card.Title>
@@ -70,7 +70,7 @@
                     id="password"
                     type="password"
                     name="password"
-                    placeholder="••••••••"
+                    placeholder="Enter password"
                     bind:value={$form.password}
                     {...$constraints.password}
                   />

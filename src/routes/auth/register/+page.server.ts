@@ -9,7 +9,20 @@ import { lucia } from "$lib/server/auth";
 import { RegisterSchema } from "$lib/types";
 import { checkIfEmailExists, insertNewUser } from "$lib/server/database/utils";
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async (event) => {
+  if (event.locals.user) {
+    return redirect(
+      "/app",
+      {
+        type: "success",
+        message: {
+          title: `You're already logged in.`,
+          description: "",
+        },
+      },
+      event.cookies
+    );
+  }
   const form = await superValidate(zod4(RegisterSchema));
   return { form };
 };
