@@ -11,15 +11,6 @@
   <NavigationMenu.Root>
     <NavigationMenu.List>
       <NavigationMenu.Item>
-        <NavigationMenu.Link>
-          <form method="post" action="/app?/logout" use:enhance>
-            <button type="submit" class="text-sm hover:underline"
-              >Log Out</button
-            >
-          </form>
-        </NavigationMenu.Link>
-      </NavigationMenu.Item>
-      <NavigationMenu.Item>
         <ThemeToggler />
       </NavigationMenu.Item>
     </NavigationMenu.List>
