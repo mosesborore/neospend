@@ -2,6 +2,7 @@
   import { page } from "$app/state";
   import { resolve } from "$app/paths";
 
+  import ArrowLeft from "@lucide/svelte/icons/arrow-left";
   import * as NavigationMenu from "$lib/components/ui/navigation-menu/index.js";
   import { buttonVariants } from "$lib/components/ui/button/index";
   import ThemeToggler from "$lib/components/theme-controller.svelte";
@@ -30,7 +31,7 @@
       <a
         href={resolve("/app")}
         class={cn(buttonVariants({ variant: "link" }), "mx-auto")}
-        >Go back home</a
+        ><ArrowLeft />Go back home</a
       >
     </div>
   </section>
