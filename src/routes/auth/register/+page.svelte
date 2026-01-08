@@ -103,12 +103,15 @@
                   id="confirm"
                   type="password"
                   name="confirm"
+                  aria-invalid={$errors.confirm ? true : null}
                   placeholder="Enter password again to confirm"
                   bind:value={$form.confirm}
                   {...$constraints.confirm}
                 />
                 {#if $errors.confirm}
-                  <Field.Description>{$errors.confirm}</Field.Description>
+                  <Field.Description class="text-red-600"
+                    >{$errors.confirm}</Field.Description
+                  >
                 {/if}
               </Field.Field>
             </Field.Group>

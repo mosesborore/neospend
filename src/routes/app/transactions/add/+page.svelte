@@ -36,9 +36,9 @@
     },
   });
 
-  const getAccounts = () => data.accountOptions;
+  const getAccountsOptions = () => data.accountOptions;
 
-  const accounts = getAccounts();
+  const accountsOptions = getAccountsOptions();
 
   const transactionTypes = [
     {
@@ -64,8 +64,8 @@
   ];
 
   const accountLabel = $derived(
-    accounts.find((a) => a.value === $transactionForm.account)?.label ??
-      "Choose account"
+    accountsOptions.find((a) => a.value === $transactionForm.accountId)
+      ?.label ?? "Choose account"
   );
 
   let transactions = $state<TransactionType[]>([]);
@@ -82,7 +82,7 @@
   );
   const categoryLabel = $derived.by(() => {
     return (
-      categoryOptions?.find((i) => i.value === $transactionForm.category)
+      categoryOptions?.find((i) => i.value === $transactionForm.categoryId)
         ?.label ?? "Choose category"
     );
   });
@@ -162,7 +162,7 @@
         </Field.Set>
 
         {#if isTransfer}
-          <TransferForm accountOptions={accounts} {transfers} />
+          <TransferForm accountOptions={accountsOptions} {transfers} />
         {:else}
           <div class="w-full">
             <h2 class="font-semibold mb-2 text-sm">Transaction Details.</h2>
@@ -217,9 +217,9 @@
                   <Field.Label for="category">Category</Field.Label>
                   <Select.Root
                     type="single"
-                    bind:value={$transactionForm.category}
+                    bind:value={$transactionForm.categoryId}
                     name="category"
-                    {...$constraints.category}
+                    {...$constraints.categoryId}
                   >
                     <Select.Trigger>{categoryLabel}</Select.Trigger>
                     <Select.Content>
@@ -228,8 +228,8 @@
                       {/each}
                     </Select.Content>
                   </Select.Root>
-                  {#if $errors.category}
-                    <Field.Description>{$errors.category}</Field.Description>
+                  {#if $errors.categoryId}
+                    <Field.Description>{$errors.categoryId}</Field.Description>
                   {/if}
                 </Field.Field>
                 <Field.Set>
@@ -241,18 +241,20 @@
                     <Field.Field>
                       <Select.Root
                         type="single"
-                        bind:value={$transactionForm.account}
+                        bind:value={$transactionForm.accountId}
                         name="account"
                       >
                         <Select.Trigger>{accountLabel}</Select.Trigger>
                         <Select.Content>
-                          {#each accounts as account (account.value)}
+                          {#each accountsOptions as account (account.value)}
                             <Select.Item {...account} />
                           {/each}
                         </Select.Content>
                       </Select.Root>
-                      {#if $errors.account}
-                        <Field.Description>{$errors.account}</Field.Description>
+                      {#if $errors.accountId}
+                        <Field.Description
+                          >{$errors.accountId}</Field.Description
+                        >
                       {/if}
                     </Field.Field>
                   </Field.Group>
@@ -327,7 +329,7 @@
     <section class="flex gap-12 flex-col">
       <div id="transactions">
         <h2 class="mb-4 text-muted-foreground font-semibold">Transactions</h2>
-        <TransactionList {transactions} />
+        <TransactionList {transactions} accounts={data.accounts} />
       </div>
       <div id="transfers">
         <h2 class="mb-4 text-muted-foreground font-semibold">Transfers</h2>

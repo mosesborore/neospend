@@ -4,11 +4,11 @@ import { message, superValidate } from "sveltekit-superforms";
 
 import { db } from "$lib/server/db/db";
 import { requireLogin } from "$lib/server/auth";
-import { CreateCategorySchema } from "$lib/types";
 import { setFlash } from "sveltekit-flash-message/server";
 import { zod4 } from "sveltekit-superforms/adapters";
 import { categories as categoryTable } from "$lib/server/db/schema";
-import type { type } from "os";
+
+import { CreateCategorySchema } from "$lib/server/db/types";
 
 export const load: PageServerLoad = async (event) => {
   const user = requireLogin(event);

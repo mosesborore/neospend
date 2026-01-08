@@ -9,7 +9,7 @@ import { redirect } from "sveltekit-flash-message/server";
 
 import { db } from "$lib/server/db/db";
 import { lucia } from "$lib/server/auth";
-import { LoginSchema } from "$lib/types";
+import { LoginSchema } from "$lib/server/db/types";
 
 export const load: PageServerLoad = async (event) => {
   if (event.locals.user) {

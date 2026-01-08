@@ -35,7 +35,7 @@
           <span>21 Dec</span>
           <Dot size="20" class="inline font-bold" />
           <span>
-            {accounts.find((a) => a.id === transaction.account)?.name}</span
+            {accounts.find((a) => a.id === transaction.accountId)?.name}</span
           >
         </Item.Description>
       </Item.Content>

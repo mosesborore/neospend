@@ -1,7 +1,9 @@
 import { message, superValidate } from "sveltekit-superforms";
 import type { Actions, PageServerLoad } from "./$types";
 
-import { CreateTransactionSchema, type SelectInputOption } from "$lib/types";
+import { type SelectInputOption } from "$lib/types";
+
+import { CreateTransactionSchema } from "$lib/server/db/types";
 import { accounts as accountTable } from "$lib/server/db/schema";
 import { db } from "$lib/server/db/db";
 import { requireLogin } from "$lib/server/auth";

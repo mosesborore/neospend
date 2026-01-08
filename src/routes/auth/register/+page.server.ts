@@ -4,9 +4,8 @@ import { message, superValidate } from "sveltekit-superforms";
 import { zod4 } from "sveltekit-superforms/adapters";
 import { hash } from "@node-rs/argon2";
 import { generateIdFromEntropySize } from "lucia";
-import { lucia } from "$lib/server/auth";
 
-import { RegisterSchema } from "$lib/types";
+import { RegisterUserSchema } from "$lib/server/db/types";
 import { checkIfEmailExists, insertNewUser } from "$lib/server/db/utils";
 
 export const load: PageServerLoad = async (event) => {
@@ -23,13 +22,13 @@ export const load: PageServerLoad = async (event) => {
       event.cookies
     );
   }
-  const form = await superValidate(zod4(RegisterSchema));
+  const form = await superValidate(zod4(RegisterUserSchema));
   return { form };
 };
 
 export const actions = {
   default: async ({ request, cookies }) => {
-    const form = await superValidate(request, zod4(RegisterSchema));
+    const form = await superValidate(request, zod4(RegisterUserSchema));
     console.log(form);
 
     if (!form.valid) {
