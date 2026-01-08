@@ -4,10 +4,10 @@ import { verify } from "@node-rs/argon2";
 import { message, superValidate } from "sveltekit-superforms";
 import { zod4 } from "sveltekit-superforms/adapters";
 import { eq } from "drizzle-orm";
-import { users as userTable } from "$lib/server/database/schema";
+import { users as userTable } from "$lib/server/db/schema";
 import { redirect } from "sveltekit-flash-message/server";
 
-import { db } from "$lib/server/database/db";
+import { db } from "$lib/server/db/db";
 import { lucia } from "$lib/server/auth";
 import { LoginSchema } from "$lib/types";
 

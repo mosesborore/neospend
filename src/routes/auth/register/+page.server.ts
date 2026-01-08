@@ -7,7 +7,7 @@ import { generateIdFromEntropySize } from "lucia";
 import { lucia } from "$lib/server/auth";
 
 import { RegisterSchema } from "$lib/types";
-import { checkIfEmailExists, insertNewUser } from "$lib/server/database/utils";
+import { checkIfEmailExists, insertNewUser } from "$lib/server/db/utils";
 
 export const load: PageServerLoad = async (event) => {
   if (event.locals.user) {

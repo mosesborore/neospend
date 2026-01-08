@@ -2,10 +2,10 @@ import type { Actions, PageServerLoad } from "./$types";
 import { eq } from "drizzle-orm";
 import { message, superValidate } from "sveltekit-superforms";
 
-import { db } from "$lib/server/database/db";
+import { db } from "$lib/server/db/db";
 import { requireLogin } from "$lib/server/auth";
 import { CreateAccountSchema } from "$lib/types";
-import { accounts as accountTable } from "$lib/server/database/schema";
+import { accounts as accountTable } from "$lib/server/db/schema";
 import { setFlash } from "sveltekit-flash-message/server";
 import { zod4 } from "sveltekit-superforms/adapters";
 
