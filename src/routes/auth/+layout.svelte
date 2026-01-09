@@ -7,7 +7,7 @@
 </script>
 
 <div class="container mx-auto">
-  <nav class="flex items-center h-10 py-4">
+  <nav class="flex items-center h-10 p-4">
     <span class="text-lg font-semibold">NeoSpend</span>
     <NavigationMenu.Root class="ms-auto">
       <NavigationMenu.List class="gap-x-2">

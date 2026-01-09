@@ -102,9 +102,9 @@
 </svelte:head>
 
 <div>
-  <header class="space-y-2">
+  <header class="space-y-2 border-b pb-4">
     <h1
-      class="scroll-m-20 text-4xl font-semibold tracking-tight sm:text-3xl xl:text-4xl"
+      class="scroll-m-20 text-2xl font-semibold tracking-tight sm:text-3xl xl:text-4xl"
     >
       Add Transactions
     </h1>
@@ -114,7 +114,7 @@
     class={cn([
       "grid mb-20",
       "gap-12",
-      "mt-12",
+      "mt-8",
       !sidebar.isMobile && sidebar.open
         ? "max-xl:grid-cols-1 xl:grid-cols-2"
         : "grid-cols-2 max-lg:grid-cols-1",
@@ -160,6 +160,8 @@
             </Field.Label>
           </RadioGroup.Root>
         </Field.Set>
+
+        <Field.Separator />
 
         {#if isTransfer}
           <TransferForm accountOptions={accountsOptions} {transfers} />
