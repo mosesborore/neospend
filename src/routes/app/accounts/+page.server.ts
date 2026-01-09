@@ -20,6 +20,8 @@ export const load: PageServerLoad = async (event) => {
     .from(accountTable)
     .where(eq(accountTable.userId, user.id));
 
+  event.depends("app:accounts");
+
   return { accounts, form };
 };
 
