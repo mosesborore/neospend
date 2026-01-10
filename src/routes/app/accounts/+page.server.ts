@@ -4,7 +4,7 @@ import { message, superValidate } from "sveltekit-superforms";
 
 import { db } from "$lib/server/db/db";
 import { requireLogin } from "$lib/server/auth";
-import { accounts as accountTable } from "$lib/server/db/schema";
+import { accounts as accountTable } from "$lib/server/db/schemas";
 import { setFlash } from "sveltekit-flash-message/server";
 import { zod4 } from "sveltekit-superforms/adapters";
 
@@ -53,7 +53,7 @@ export const actions = {
           title: `${form.data.name}: New account added successfully.`,
         },
       },
-      event
+      event,
     );
 
     return message(form, "New Account added.");

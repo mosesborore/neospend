@@ -1,12 +1,7 @@
 import { createSelectSchema, createInsertSchema } from "drizzle-zod";
 
-import {
-  users,
-  accounts,
-  transactions,
-  categories,
-  transactionTypeEnum,
-} from "$lib/server/db/schema";
+import { users, accounts, transactions, categories } from "./schemas";
+
 import { z } from "zod/v4";
 
 const TRANSACTIONTYPES = ["income", "expense", "transfer"] as const;

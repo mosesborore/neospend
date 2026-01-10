@@ -19,7 +19,7 @@ export const load: PageServerLoad = async (event) => {
           description: "",
         },
       },
-      event.cookies
+      event.cookies,
     );
   }
   const form = await superValidate(zod4(RegisterUserSchema));
@@ -59,7 +59,7 @@ export const actions = {
     } catch {
       return message(
         form,
-        "An error has occurred while creating your account."
+        "An error has occurred while creating your account.",
       );
     }
 
@@ -72,7 +72,7 @@ export const actions = {
           description: "",
         },
       },
-      cookies
+      cookies,
     );
   },
 } satisfies Actions;

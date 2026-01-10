@@ -2,7 +2,7 @@ import { error, json } from "@sveltejs/kit";
 import type { RequestHandler } from "../$types";
 import { requireLogin } from "$lib/server/auth";
 import { db } from "$lib/server/db/db";
-import { accounts } from "$lib/server/db/schema";
+import { accounts } from "$lib/server/db/schemas";
 import { eq, and } from "drizzle-orm";
 
 export const DELETE: RequestHandler = async (event) => {

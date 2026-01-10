@@ -17,7 +17,7 @@ export const actions: Actions = {
             description: "",
           },
         },
-        event.cookies
+        event.cookies,
       );
     }
     await lucia.invalidateSession(session.id);

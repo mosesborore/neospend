@@ -4,7 +4,7 @@ import type { Actions, PageServerLoad } from "./$types";
 import { type SelectInputOption } from "$lib/types";
 
 import { CreateTransactionSchema } from "$lib/server/db/types";
-import { accounts as accountTable } from "$lib/server/db/schema";
+import { accounts as accountTable } from "$lib/server/db/schemas";
 import { db } from "$lib/server/db/db";
 import { requireLogin } from "$lib/server/auth";
 import { eq } from "drizzle-orm";
@@ -47,7 +47,7 @@ export const load: PageServerLoad = async (event) => {
 
   const addTransactionForm = await superValidate(
     event.request,
-    zod4(CreateTransactionSchema)
+    zod4(CreateTransactionSchema),
   );
 
   return {
@@ -63,7 +63,7 @@ export const actions: Actions = {
   addTransaction: async (event) => {
     const form = await superValidate(
       event.request,
-      zod4(CreateTransactionSchema)
+      zod4(CreateTransactionSchema),
     );
 
     if (!form.valid) {

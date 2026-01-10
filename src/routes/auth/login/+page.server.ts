@@ -4,7 +4,7 @@ import { verify } from "@node-rs/argon2";
 import { message, superValidate } from "sveltekit-superforms";
 import { zod4 } from "sveltekit-superforms/adapters";
 import { eq } from "drizzle-orm";
-import { users as userTable } from "$lib/server/db/schema";
+import { users as userTable } from "$lib/server/db/schemas";
 import { redirect } from "sveltekit-flash-message/server";
 
 import { db } from "$lib/server/db/db";
@@ -22,7 +22,7 @@ export const load: PageServerLoad = async (event) => {
           description: "",
         },
       },
-      event.cookies
+      event.cookies,
     );
   }
   const loginForm = await superValidate(zod4(LoginSchema));
@@ -55,7 +55,7 @@ export const actions = {
         timeCost: 2,
         outputLen: 32,
         parallelism: 1,
-      }
+      },
     );
 
     if (!validPassword) {
@@ -89,7 +89,7 @@ export const actions = {
           description: "",
         },
       },
-      event.cookies
+      event.cookies,
     );
   },
 } satisfies Actions;

@@ -6,7 +6,7 @@ import { db } from "$lib/server/db/db";
 import { requireLogin } from "$lib/server/auth";
 import { setFlash } from "sveltekit-flash-message/server";
 import { zod4 } from "sveltekit-superforms/adapters";
-import { categories as categoryTable } from "$lib/server/db/schema";
+import { categories as categoryTable } from "$lib/server/db/schemas";
 
 import { CreateCategorySchema } from "$lib/server/db/types";
 
@@ -61,7 +61,7 @@ export const actions = {
           title: `${form.data.name}: New category added successfully.`,
         },
       },
-      event
+      event,
     );
 
     return message(form, "New Category added.");

@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 
 import { db } from "./db";
-import { users as userTable } from "./schema";
+import { users as userTable } from "./schemas";
 
 type UserInsertSchema = typeof userTable.$inferInsert;
 
