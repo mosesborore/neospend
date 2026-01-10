@@ -3,6 +3,8 @@
   import SettingsIcon from "@lucide/svelte/icons/settings";
   import LogOut from "@lucide/svelte/icons/log-out";
   import TagIcon from "@lucide/svelte/icons/tag";
+  import Wallet from "@lucide/svelte/icons/wallet";
+  import DollarSign from "@lucide/svelte/icons/dollar-sign";
   import * as Sidebar from "$lib/components/ui/sidebar/index.js";
   import { Button } from "$lib/components/ui/button/index.js";
   import { enhance } from "$app/forms";
@@ -29,13 +31,13 @@
     {
       title: "Transactions",
       url: `${ROOT_PATH}/transactions`,
-      icon: SettingsIcon,
+      icon: DollarSign,
     },
 
     {
       title: "Accounts",
       url: `${ROOT_PATH}/accounts`,
-      icon: SettingsIcon,
+      icon: Wallet,
     },
     {
       title: "Categories",
