@@ -2,12 +2,13 @@ import type { Actions, PageServerLoad } from "./$types";
 import { eq } from "drizzle-orm";
 import { message, superValidate } from "sveltekit-superforms";
 
-import { db } from "$lib/server/database/db";
+import { db } from "$lib/server/db/db";
 import { requireLogin } from "$lib/server/auth";
-import { CreateAccountSchema } from "$lib/types";
-import { accounts as accountTable } from "$lib/server/database/schema";
+import { accounts as accountTable } from "$lib/server/db/schemas";
 import { setFlash } from "sveltekit-flash-message/server";
 import { zod4 } from "sveltekit-superforms/adapters";
+
+import { CreateAccountSchema } from "$lib/server/db/types";
 
 export const load: PageServerLoad = async (event) => {
   const user = requireLogin(event);
@@ -18,6 +19,8 @@ export const load: PageServerLoad = async (event) => {
     .select()
     .from(accountTable)
     .where(eq(accountTable.userId, user.id));
+
+  event.depends("app:accounts");
 
   return { accounts, form };
 };
@@ -50,7 +53,7 @@ export const actions = {
           title: `${form.data.name}: New account added successfully.`,
         },
       },
-      event
+      event,
     );
 
     return message(form, "New Account added.");

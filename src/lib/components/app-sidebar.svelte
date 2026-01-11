@@ -1,9 +1,14 @@
 <script lang="ts">
   import HouseIcon from "@lucide/svelte/icons/house";
   import SettingsIcon from "@lucide/svelte/icons/settings";
+  import LogOut from "@lucide/svelte/icons/log-out";
   import TagIcon from "@lucide/svelte/icons/tag";
+  import Wallet from "@lucide/svelte/icons/wallet";
+  import DollarSign from "@lucide/svelte/icons/dollar-sign";
   import * as Sidebar from "$lib/components/ui/sidebar/index.js";
-  import * as Avatar from "$lib/components/ui/avatar/index.js";
+  import { Button } from "$lib/components/ui/button/index.js";
+  import { enhance } from "$app/forms";
+
   //Menu items
 
   const ROOT_PATH = "/app";
@@ -26,13 +31,13 @@
     {
       title: "Transactions",
       url: `${ROOT_PATH}/transactions`,
-      icon: SettingsIcon,
+      icon: DollarSign,
     },
 
     {
       title: "Accounts",
       url: `${ROOT_PATH}/accounts`,
-      icon: SettingsIcon,
+      icon: Wallet,
     },
     {
       title: "Categories",
@@ -100,10 +105,11 @@
       </Sidebar.GroupContent>
     </Sidebar.Group>
   </Sidebar.Content>
-  <Sidebar.Footer>
-    <Avatar.Root>
-      <Avatar.Image src="https://github.com/shadcn.png" alt="@shadcn" />
-      <Avatar.Fallback>CN</Avatar.Fallback>
-    </Avatar.Root>
+  <Sidebar.Footer class="items-start">
+    <form method="post" action="/app?/logout" use:enhance>
+      <Button variant="ghost" class="hover:underline" type="submit"
+        >Log Out <LogOut /></Button
+      >
+    </form>
   </Sidebar.Footer>
 </Sidebar.Root>

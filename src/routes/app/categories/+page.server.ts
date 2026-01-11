@@ -2,13 +2,13 @@ import type { Actions, PageServerLoad } from "./$types";
 import { eq } from "drizzle-orm";
 import { message, superValidate } from "sveltekit-superforms";
 
-import { db } from "$lib/server/database/db";
+import { db } from "$lib/server/db/db";
 import { requireLogin } from "$lib/server/auth";
-import { CreateCategorySchema } from "$lib/types";
 import { setFlash } from "sveltekit-flash-message/server";
 import { zod4 } from "sveltekit-superforms/adapters";
-import { categories as categoryTable } from "$lib/server/database/schema";
-import type { type } from "os";
+import { categories as categoryTable } from "$lib/server/db/schemas";
+
+import { CreateCategorySchema } from "$lib/server/db/types";
 
 export const load: PageServerLoad = async (event) => {
   const user = requireLogin(event);
@@ -61,7 +61,7 @@ export const actions = {
           title: `${form.data.name}: New category added successfully.`,
         },
       },
-      event
+      event,
     );
 
     return message(form, "New Category added.");

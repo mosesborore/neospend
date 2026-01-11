@@ -3,8 +3,8 @@ import { dev } from "$app/environment";
 import { Lucia, TimeSpan } from "lucia";
 import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
 
-import { db } from "./database/db";
-import { session, users } from "./database/schema";
+import { db } from "./db/db";
+import { session, users } from "./db/schemas";
 import { redirect } from "sveltekit-flash-message/server";
 import { handleLoginRedirect } from "$lib/utils";
 import type { RequestEvent } from "@sveltejs/kit";
@@ -50,7 +50,7 @@ export function requireLogin(event: RequestEvent) {
           title: "You're required to be logged in to access the page.",
         },
       },
-      event.cookies
+      event.cookies,
     );
   }
 

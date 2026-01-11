@@ -1,6 +1,8 @@
 <script lang="ts">
   import MoreVertical from "@lucide/svelte/icons/more-vertical";
   import BadgeCheckIcon from "@lucide/svelte/icons/badge-check";
+  import Trash2 from "@lucide/svelte/icons/trash-2";
+  import Pencil from "@lucide/svelte/icons/pencil";
   import { Spinner } from "$lib/components/ui/spinner/index.js";
 
   import * as Item from "$lib/components/ui/item/index.js";
@@ -11,9 +13,9 @@
   import { Input } from "$lib/components/ui/input/index.js";
 
   import { superForm } from "sveltekit-superforms";
-  import type { Component } from "svelte";
-  import type { DialogRootPropsWithoutHTML } from "bits-ui";
+  import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
   import { formatAmount } from "$lib/utils";
+  import { invalidate } from "$app/navigation";
 
   let { data }: PageProps = $props();
 
@@ -40,6 +42,36 @@
       console.log("Form submitted.");
     },
   });
+
+  async function handleDelete(id: string) {
+    const a = confirm(
+      "If you delete this account. You also delete transactions associated with it."
+    );
+
+    if (!a) {
+      return;
+    }
+
+    const resp = await fetch("/api/accounts", {
+      method: "DELETE",
+      body: JSON.stringify({ id }),
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+
+    if (resp.ok) {
+      const data = await resp.json();
+      if (data.error) {
+        console.error(data.error);
+      } else {
+        console.log(data.message);
+        invalidate("app:accounts");
+      }
+    } else {
+      console.error(data);
+    }
+  }
 </script>
 
 <div>
@@ -142,9 +174,25 @@
               >
             </Item.Content>
             <Item.Actions>
-              <Button variant="ghost" size="icon">
-                <MoreVertical />
-              </Button>
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger>
+                  {#snippet child({ props })}
+                    <Button variant="ghost" size="icon" {...props}>
+                      <MoreVertical />
+                    </Button>
+                  {/snippet}
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content>
+                  <DropdownMenu.Group>
+                    <DropdownMenu.Item>
+                      <Pencil /> Edit
+                    </DropdownMenu.Item>
+                    <DropdownMenu.Item onclick={() => handleDelete(account.id)}>
+                      <Trash2 /> Delete
+                    </DropdownMenu.Item>
+                  </DropdownMenu.Group>
+                </DropdownMenu.Content>
+              </DropdownMenu.Root>
             </Item.Actions>
           </Item.Root>
         {/each}

@@ -4,10 +4,9 @@ import { message, superValidate } from "sveltekit-superforms";
 import { zod4 } from "sveltekit-superforms/adapters";
 import { hash } from "@node-rs/argon2";
 import { generateIdFromEntropySize } from "lucia";
-import { lucia } from "$lib/server/auth";
 
-import { RegisterSchema } from "$lib/types";
-import { checkIfEmailExists, insertNewUser } from "$lib/server/database/utils";
+import { RegisterUserSchema } from "$lib/server/db/types";
+import { checkIfEmailExists, insertNewUser } from "$lib/server/db/utils";
 
 export const load: PageServerLoad = async (event) => {
   if (event.locals.user) {
@@ -20,16 +19,16 @@ export const load: PageServerLoad = async (event) => {
           description: "",
         },
       },
-      event.cookies
+      event.cookies,
     );
   }
-  const form = await superValidate(zod4(RegisterSchema));
+  const form = await superValidate(zod4(RegisterUserSchema));
   return { form };
 };
 
 export const actions = {
   default: async ({ request, cookies }) => {
-    const form = await superValidate(request, zod4(RegisterSchema));
+    const form = await superValidate(request, zod4(RegisterUserSchema));
     console.log(form);
 
     if (!form.valid) {
@@ -60,7 +59,7 @@ export const actions = {
     } catch {
       return message(
         form,
-        "An error has occurred while creating your account."
+        "An error has occurred while creating your account.",
       );
     }
 
@@ -73,7 +72,7 @@ export const actions = {
           description: "",
         },
       },
-      cookies
+      cookies,
     );
   },
 } satisfies Actions;
