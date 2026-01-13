@@ -74,6 +74,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>Accounts</title>
+</svelte:head>
+
 <div>
   <header class="space-y-2">
     <h1
