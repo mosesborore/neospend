@@ -3,6 +3,7 @@ import type { Actions, PageServerLoad } from "./$types";
 
 import { type SelectInputOption } from "$lib/types";
 
+import { CreateTransactionSchema } from "$lib/server/db/types";
 import {
   accounts as accountTable,
   transactions,
@@ -16,43 +17,62 @@ import { fail } from "@sveltejs/kit";
 import { zod4 } from "sveltekit-superforms/adapters";
 import { setFlash } from "sveltekit-flash-message/server";
 
-type Options = { id: string | number; name: string; type?: string };
+interface Options {
+  id: string | number;
+  name: string;
+}
 
-const getSelectOptions = (options: Options[]) => {
-  let option: SelectInputOption[] = [];
+interface AccountSelectOptions extends Options {
+  balance: number;
+}
 
-  options.forEach((o) => {
-    option.push({ value: o.id.toString(), label: o.name });
+const getAccountSelectOptions = (selectOptions: AccountSelectOptions[]) => {
+  let options: SelectInputOption[] = [];
+
+  selectOptions.forEach((o) => {
+    options.push({
+      value: o.id.toString(),
+      label: `${o.name} -  ${o.balance}`,
+    });
   });
 
-  return option;
+  return options;
+};
+
+const getSelectOptions = (selectOptions: Options[]) => {
+  let options: SelectInputOption[] = [];
+
+  selectOptions.forEach((o) => {
+    options.push({ value: o.id.toString(), label: o.name });
+  });
+  return options;
 };
 
 export const load: PageServerLoad = async (event) => {
   const user = requireLogin(event);
 
-  const all = await db.query.users.findFirst({
-    columns: {
-      password: false,
-    },
-    where: eq(users.id, user.id),
-    with: {
-      transactions: true,
-
-      accounts: {
-        columns: {
-          userId: false,
-        },
-      },
-    },
-  });
-
-  console.log(all);
+  // const data = await db.query.users.findFirst({
+  //   columns: {
+  //     password: false,
+  //   },
+  //   where: eq(users.id, user.id),
+  //   with: {
+  //     transactions: true,
+  //     categories: true,
+  //     accounts: {
+  //       columns: {
+  //         userId: false,
+  //         createdAt: false,
+  //       },
+  //     },
+  //   },
+  // });
 
   const accounts = await db
     .select({
       id: accountTable.id,
       name: accountTable.name,
+      balance: accountTable.balance,
     })
     .from(accountTable)
     .where(eq(accountTable.userId, user.id));
@@ -76,11 +96,10 @@ export const load: PageServerLoad = async (event) => {
       })
     )
   );
-
   return {
     addTransactionForm,
     accounts,
-    accountOptions: getSelectOptions(accounts),
+    accountOptions: getAccountSelectOptions(accounts),
     expenseOptions,
     incomeOptions,
   };
@@ -92,10 +111,8 @@ export const actions: Actions = {
     // console.log(await event.request.formData());
     const form = await superValidate(
       event.request,
-      zod4(CreateTransactionSchema),
+      zod4(CreateTransactionSchema)
     );
-
-    console.log(form);
 
     if (!form.valid) {
       return fail(400, { form });
@@ -111,17 +128,20 @@ export const actions: Actions = {
           };
 
     try {
-      await db.transaction(async (tx) => {
-        await tx.insert(transactions).values({
-          name: form.data.name,
-          userId: user.id,
-          type: form.data.type,
-          categoryId: Number(form.data.categoryId),
-          accountId: form.data.accountId,
-          amount: form.data.amount,
-          notes: form.data.notes,
-          currency: form.data.currency,
-        });
+      const newTransaction = await db.transaction(async (tx) => {
+        const [transaction] = await tx
+          .insert(transactions)
+          .values({
+            name: form.data.name,
+            userId: user.id,
+            type: form.data.type,
+            categoryId: Number(form.data.categoryId),
+            accountId: form.data.accountId,
+            amount: form.data.amount,
+            notes: form.data.notes,
+            currency: form.data.currency,
+          })
+          .returning();
 
         await tx
           .update(accountTable)
@@ -132,6 +152,8 @@ export const actions: Actions = {
               eq(accountTable.id, form.data.accountId)
             )
           );
+
+        return transaction;
       });
 
       setFlash(
@@ -143,9 +165,21 @@ export const actions: Actions = {
         },
         event
       );
-      return message(form, "Form posted successfully!");
+      return message(form, { newTransaction });
     } catch (e) {
       console.log("Unable to add new transaction: ", e);
+
+      setFlash(
+        {
+          type: "error",
+          message: {
+            title: "Unable to add the transaction.",
+          },
+        },
+        event
+      );
+
+      return fail(400, { form });
     }
   },
 };

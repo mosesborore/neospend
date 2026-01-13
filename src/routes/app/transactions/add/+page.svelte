@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { Spinner } from "$lib/components/ui/spinner/index.js";
   import { Button } from "$lib/components/ui/button/index.js";
   import { Input } from "$lib/components/ui/input/index.js";
   import * as Field from "$lib/components/ui/field/index.js";
@@ -19,19 +20,23 @@
 
   let { data }: PageProps = $props();
 
+  let transactions = $state<TransactionType[]>([]);
+
   const getTransactionForm = () => data.addTransactionForm;
 
   let {
     form: transactionForm,
-    message,
+
     constraints,
     enhance,
+    delayed,
     errors,
   } = superForm(getTransactionForm(), {
     resetForm: true,
     onUpdated: ({ form }) => {
       if (form.valid) {
-        console.log(form.data);
+        transactions.push(form.message.newTransaction);
+        console.log("form submitted successfully.");
       }
     },
   });
@@ -67,8 +72,6 @@
     accountsOptions.find((a) => a.value === $transactionForm.accountId)
       ?.label ?? "Choose account"
   );
-
-  let transactions = $state<TransactionType[]>([]);
 
   const transactionTypeLabel = $derived(
     transactionTypes.find((t) => t.value === $transactionForm.type)?.label ??
@@ -220,7 +223,7 @@
                   <Select.Root
                     type="single"
                     bind:value={$transactionForm.categoryId}
-                    name="category"
+                    name="categoryId"
                     {...$constraints.categoryId}
                   >
                     <Select.Trigger>{categoryLabel}</Select.Trigger>
@@ -244,7 +247,7 @@
                       <Select.Root
                         type="single"
                         bind:value={$transactionForm.accountId}
-                        name="account"
+                        name="accountId"
                       >
                         <Select.Trigger>{accountLabel}</Select.Trigger>
                         <Select.Content>
@@ -319,9 +322,13 @@
               </Field.Group>
             </Field.Set>
             <Field.Separator />
-            <p>{$message}</p>
             <Field.Field orientation="responsive">
-              <Button type="submit" class="max-w-xs mx-auto">Add</Button>
+              <Button type="submit" class="max-w-xs mx-auto">
+                Add
+                {#if $delayed}
+                  <Spinner />
+                {/if}
+              </Button>
             </Field.Field>
           </form>
         {/if}
