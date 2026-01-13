@@ -16,32 +16,35 @@
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
   import { formatAmount } from "$lib/utils";
   import { invalidate } from "$app/navigation";
+  import { Tween } from "svelte/motion";
 
   let { data }: PageProps = $props();
 
-  const getAccountForm = () => data.form;
+  const totalTween = new Tween(0, {
+    duration: 750,
+    delay: 1,
+  });
+
+  $effect(() => {
+    // update when total changes
+    totalTween.target = total;
+  });
 
   let total = $derived(
     data.accounts.reduce((p, account) => (p += account.balance), 0)
   );
 
-  let {
-    form: accountForm,
-    constraints,
-    message,
-    errors,
-    enhance,
-    reset,
-    delayed,
-  } = superForm(getAccountForm(), {
-    resetForm: true,
-    onError: ({ result }) => {
-      console.log("Something went wrong: ", result);
-    },
-    onUpdated: () => {
-      console.log("Form submitted.");
-    },
-  });
+  const getAccountForm = () => data.form;
+  let { form, constraints, message, errors, enhance, reset, delayed } =
+    superForm(getAccountForm(), {
+      resetForm: true,
+      onError: ({ result }) => {
+        console.log("Something went wrong: ", result);
+      },
+      onUpdated: () => {
+        console.log("Form submitted.");
+      },
+    });
 
   async function handleDelete(id: string) {
     const a = confirm(
@@ -122,7 +125,7 @@
                 <Field.Label for="name">Account Name</Field.Label>
                 <Input
                   name="name"
-                  bind:value={$accountForm.name}
+                  bind:value={$form.name}
                   {...$constraints.name}
                 />
                 <Field.Description>{$errors.name}</Field.Description>
@@ -132,7 +135,7 @@
                 <Input
                   type="number"
                   name="balance"
-                  bind:value={$accountForm.balance}
+                  bind:value={$form.balance}
                   {...$constraints.balance}
                 />
                 <Field.Description>{$errors.name}</Field.Description>
@@ -164,7 +167,9 @@
               <BadgeCheckIcon class="size-5" />
             </Item.Media>
             <Item.Content>
-              <Item.Title>All Accounts Total: {formatAmount(total)}</Item.Title>
+              <Item.Title>
+                All Accounts Total: {formatAmount(totalTween.current)}
+              </Item.Title>
             </Item.Content>
           </Item.Root>
         </div>
