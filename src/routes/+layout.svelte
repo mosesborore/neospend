@@ -28,8 +28,8 @@
   <link rel="icon" href={favicon} />
 </svelte:head>
 {#if $flash}
-  <section class="relative mx-4" bind:this={alertContainer}>
-    <div class="absolute z-99 w-full top-4">
+  <section class="fixed top-4 z-99999 right-[2%]" bind:this={alertContainer}>
+    <div class="sticky w-full top-4">
       <div class="grid w-full max-w-xl items-start gap-4 mx-auto">
         <Alert.Root
           variant={$flash.type === "error" ? "destructive" : "default"}
