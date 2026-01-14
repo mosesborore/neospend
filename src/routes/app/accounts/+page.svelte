@@ -17,12 +17,14 @@
   import { formatAmount } from "$lib/utils";
   import { invalidate } from "$app/navigation";
   import { Tween } from "svelte/motion";
+  import { linear } from "svelte/easing";
 
   let { data }: PageProps = $props();
 
   const totalTween = new Tween(0, {
-    duration: 750,
-    delay: 1,
+    duration: 1000,
+    delay: 100,
+    easing: linear,
   });
 
   $effect(() => {
