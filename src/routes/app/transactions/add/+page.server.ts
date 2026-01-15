@@ -108,7 +108,7 @@ export const load: PageServerLoad = async (event) => {
 export const actions: Actions = {
   addTransaction: async (event) => {
     const user = requireLogin(event);
-    // console.log(await event.request.formData());
+
     const form = await superValidate(
       event.request,
       zod4(CreateTransactionSchema)
