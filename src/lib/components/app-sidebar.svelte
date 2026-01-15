@@ -83,7 +83,7 @@
       </Sidebar.GroupContent>
     </Sidebar.Group>
     <Sidebar.Group>
-      <Sidebar.GroupLabel>Transaction Attributes</Sidebar.GroupLabel>
+      <Sidebar.GroupLabel>Apps</Sidebar.GroupLabel>
       <Sidebar.GroupContent>
         <Sidebar.Menu>
           {#each transactionAttributes as attribute (attribute.title)}
