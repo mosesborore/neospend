@@ -15,7 +15,7 @@
 
 <Sidebar.Provider>
   <AppSidebar />
-  <div class="bg-background flex flex-col min-h-svh w-full">
+  <div class="bg-background min-h-svh w-full">
     <header
       class="bg-background/90 sticky top-0 z-30 w-full backdrop-blur transition-shadow duration-100"
     >
@@ -27,7 +27,7 @@
       </div>
     </header>
 
-    <main class="container mx-auto p-4 flex-1" id="mainContent">
+    <main class="container mx-auto px-4 mt-4" id="mainContent">
       {@render children()}
     </main>
   </div>
