@@ -11,7 +11,7 @@
   import * as Field from "$lib/components/ui/field/index.js";
   import { Button, buttonVariants } from "$lib/components/ui/button/index.js";
   import { Input } from "$lib/components/ui/input/index.js";
-
+  import toast from "svelte-french-toast";
   import { superForm } from "sveltekit-superforms";
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
   import { formatAmount } from "$lib/utils";
@@ -33,7 +33,7 @@
   });
 
   let total = $derived(
-    data.accounts.reduce((p, account) => (p += account.balance), 0)
+    data.accounts.reduce((p, account) => (p += account.balance), 0),
   );
 
   const getAccountForm = () => data.form;
@@ -49,32 +49,34 @@
     });
 
   async function handleDelete(id: string) {
-    const a = confirm(
-      "If you delete this account. You also delete transactions associated with it."
+    const confirmed = confirm(
+      "If you delete this account. You also delete transactions associated with it.",
     );
 
-    if (!a) {
+    if (!confirmed) {
       return;
     }
 
-    const resp = await fetch("/api/accounts", {
-      method: "DELETE",
-      body: JSON.stringify({ id }),
-      headers: {
-        "content-type": "application/json",
-      },
-    });
+    try {
+      const resp = await fetch("/api/accounts", {
+        method: "DELETE",
+        body: JSON.stringify({ id }),
+        headers: {
+          "content-type": "application/json",
+        },
+      });
 
-    if (resp.ok) {
-      const data = await resp.json();
-      if (data.error) {
-        console.error(data.error);
-      } else {
-        console.log(data.message);
-        invalidate("app:accounts");
+      if (resp.ok) {
+        const result = await resp.json();
+        if (result.success) {
+          toast.success(result.message);
+          invalidate("app:accounts");
+        } else {
+          toast.error(result.message);
+        }
       }
-    } else {
-      console.error(data);
+    } catch (e) {
+      console.error(e);
     }
   }
 </script>
@@ -84,15 +86,15 @@
 </svelte:head>
 
 <div>
-  <header class="space-y-2">
-    <h1
-      class="scroll-m-20 text-4xl font-semibold tracking-tight sm:text-3xl xl:text-4xl"
-    >
-      Accounts
-    </h1>
-    <p class="text-muted-foreground text-sm">
-      All of your accounts are listed here.
-    </p>
+  <header class="flex justify-between items-center">
+    <div>
+      <h1 class="scroll-m-20 text-2xl font-semibold sm:text-3xl xl:text-4xl">
+        Accounts
+      </h1>
+      <span class="text-muted-foreground">
+        All of your accounts are listed here.
+      </span>
+    </div>
   </header>
 
   <section class="my-6">
