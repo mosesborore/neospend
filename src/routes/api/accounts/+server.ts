@@ -16,17 +16,17 @@ export const DELETE: RequestHandler = async (event) => {
       .where(and(eq(accounts.userId, user.id), eq(accounts.id, data.id)))
       .returning({ deletedId: accounts.id });
 
-    console.log(deletedAccountId);
-
     if (deletedAccountId.length > 0) {
-      return json({ message: "Account deleted" });
+      return json({ success: true, message: "Account deleted" });
     } else {
-      return json({ error: "Unable to delete. Account Not found" });
+      return json({
+        success: false,
+        message: "Unable to delete. Account Not found",
+      });
     }
   } catch (e) {
     console.log("Unable to delete account. ", e);
   }
 
-  return error(400, "Unable to delete the account");
-  // return json({ error: "Unable to delete the account" });
+  return json({ success: false, message: "Unable to delete the account" });
 };
