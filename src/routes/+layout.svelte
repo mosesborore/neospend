@@ -11,6 +11,7 @@
   import X from "@lucide/svelte/icons/x";
   import CircleAlertIcon from "@lucide/svelte/icons/circle-alert";
   import CheckCircle2Icon from "@lucide/svelte/icons/check-circle-2";
+  import {Toaster} from 'svelte-french-toast'
 
   const flash = getFlash(page);
 
@@ -53,5 +54,7 @@
     </div>
   </section>
 {/if}
+
+<Toaster/>
 
 {@render children()}
