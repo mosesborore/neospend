@@ -4,7 +4,7 @@
   import { Button } from "$lib/components/ui/button/index.js";
   import MoreVertical from "@lucide/svelte/icons/more-horizontal";
   import Dot from "@lucide/svelte/icons/dot";
-  import { formatAmount } from "$lib/utils";
+  import { cn, formatAmount } from "$lib/utils";
 
   interface PropsType {
     transactions: TransactionType[];
@@ -40,8 +40,14 @@
         </Item.Description>
       </Item.Content>
       <Item.Actions class="flex gap-4 items-center">
-        <span class="font-semibold text-base"
-          >{formatAmount(transaction.amount)}</span
+        <span
+          class={cn(
+            "font-semibold text-base",
+            transaction.type === "expense" ? "text-red-700" : "text-green-500",
+          )}
+        >
+          {transaction.type === "expense" ? "-" : "+"}
+          {formatAmount(transaction.amount)}</span
         >
         <Button variant="ghost" size="icon">
           <MoreVertical />
