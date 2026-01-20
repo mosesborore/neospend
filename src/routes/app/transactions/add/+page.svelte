@@ -15,7 +15,7 @@
   import TransferForm from "$lib/components/transfer-form.svelte";
   import type { PageProps } from "./$types";
   import { superForm } from "sveltekit-superforms";
-
+  import toast from "svelte-french-toast";
   let sidebar = useSidebar();
 
   let { data }: PageProps = $props();
@@ -35,6 +35,7 @@
     resetForm: true,
     onUpdated: ({ form }) => {
       if (form.valid) {
+        toast.success(form.message.message);
         transactions.push(form.message.newTransaction);
         console.log("form submitted successfully.");
       }

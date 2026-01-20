@@ -93,8 +93,8 @@ export const load: PageServerLoad = async (event) => {
       CreateTransactionSchema.extend({
         userId: CreateTransactionSchema.shape.userId.default(user.id),
         currency: CreateTransactionSchema.shape.currency.default("kes"),
-      })
-    )
+      }),
+    ),
   );
   return {
     addTransactionForm,
@@ -111,7 +111,7 @@ export const actions: Actions = {
 
     const form = await superValidate(
       event.request,
-      zod4(CreateTransactionSchema)
+      zod4(CreateTransactionSchema),
     );
 
     if (!form.valid) {
@@ -149,23 +149,17 @@ export const actions: Actions = {
           .where(
             and(
               eq(accountTable.userId, user.id),
-              eq(accountTable.id, form.data.accountId)
-            )
+              eq(accountTable.id, form.data.accountId),
+            ),
           );
 
         return transaction;
       });
 
-      setFlash(
-        {
-          type: "success",
-          message: {
-            title: "New transaction added successfully.",
-          },
-        },
-        event
-      );
-      return message(form, { newTransaction });
+      return message(form, {
+        newTransaction,
+        message: "New transaction added successfully.",
+      });
     } catch (e) {
       console.log("Unable to add new transaction: ", e);
 
@@ -176,7 +170,7 @@ export const actions: Actions = {
             title: "Unable to add the transaction.",
           },
         },
-        event
+        event,
       );
 
       return fail(400, { form });
