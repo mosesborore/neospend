@@ -28,7 +28,7 @@
       onUpdated: () => {
         console.log("done");
       },
-    }
+    },
   );
 
   const transactionTypes = [
@@ -47,7 +47,7 @@
   ];
   const transactionTypeLabel = $derived(
     transactionTypes.find((t) => t.value === $form.type)?.label ??
-      "Choose transaction type"
+      "Choose transaction type",
   );
 </script>
 
@@ -55,13 +55,13 @@
   <title>Categories</title>
 </svelte:head>
 <div>
-  <header class="space-y-2">
-    <h1
-      class="scroll-m-20 text-4xl font-semibold tracking-tight sm:text-3xl xl:text-4xl"
-    >
-      Categories
-    </h1>
-    <p class="text-muted-foreground text-sm">All categories are listed here.</p>
+  <header class="flex justify-between items-center">
+    <div class="spacing-y-4">
+      <h1 class="scroll-m-20 text-xl font-semibold sm:text-3xl xl:text-4xl">
+        Categories
+      </h1>
+      <span class="text-muted-foreground"> Create and manage categories </span>
+    </div>
   </header>
 
   <section class="my-6">
