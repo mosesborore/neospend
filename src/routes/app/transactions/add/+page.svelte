@@ -70,18 +70,18 @@
 
   const accountLabel = $derived(
     accountsOptions.find((a) => a.value === $transactionForm.accountId)
-      ?.label ?? "Choose account"
+      ?.label ?? "Choose account",
   );
 
   const transactionTypeLabel = $derived(
     transactionTypes.find((t) => t.value === $transactionForm.type)?.label ??
-      "Choose transaction type"
+      "Choose transaction type",
   );
 
   const categoryOptions = $derived(
     $transactionForm.type === "expense"
       ? data.expenseOptions
-      : data.incomeOptions
+      : data.incomeOptions,
   );
   const categoryLabel = $derived.by(() => {
     return (
@@ -92,7 +92,7 @@
 
   const currencyLabel = $derived(
     currencies.find((c) => c.value === $transactionForm.currency)?.label ??
-      "Choose currency"
+      "Choose currency",
   );
   // TRANSFERRING
   let isTransfer = $derived($transactionForm.type === "transfer");
@@ -106,9 +106,7 @@
 
 <div>
   <header class="space-y-2 border-b pb-4">
-    <h1
-      class="scroll-m-20 text-2xl font-semibold tracking-tight sm:text-3xl xl:text-4xl"
-    >
+    <h1 class="scroll-m-20 text-xl font-semibold sm:text-3xl xl:text-4xl">
       Add Transactions
     </h1>
   </header>
