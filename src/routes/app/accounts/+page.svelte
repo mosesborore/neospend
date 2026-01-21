@@ -1,6 +1,6 @@
 <script lang="ts">
   import MoreVertical from "@lucide/svelte/icons/more-vertical";
-  import BadgeCheckIcon from "@lucide/svelte/icons/badge-check";
+  import Wallet from "@lucide/svelte/icons/wallet";
   import Trash2 from "@lucide/svelte/icons/trash-2";
   import Pencil from "@lucide/svelte/icons/pencil";
   import { Spinner } from "$lib/components/ui/spinner/index.js";
@@ -41,9 +41,13 @@
     superForm(getAccountForm(), {
       resetForm: true,
       onError: ({ result }) => {
+        toast.error("Unable to add the account.");
         console.log("Something went wrong: ", result);
       },
-      onUpdated: () => {
+      onUpdated: ({ form }) => {
+        if (form.valid) {
+          toast.success(form.message.toastMessage);
+        }
         console.log("Form submitted.");
       },
     });
@@ -108,16 +112,6 @@
           <Dialog.Title>Add New Account</Dialog.Title>
         </Dialog.Header>
         <div class="max-w-md w-full mx-auto grid gap-4">
-          {#if $message}
-            <Item.Root variant="outline" size="sm">
-              <Item.Media>
-                <BadgeCheckIcon class="size-5" />
-              </Item.Media>
-              <Item.Content>
-                <Item.Title>{$message}</Item.Title>
-              </Item.Content>
-            </Item.Root>
-          {/if}
           <form
             class="grid gap-4"
             action="?/addAccount"
@@ -168,7 +162,7 @@
         <div id="accountTotalItem">
           <Item.Root variant="outline" size="sm" class="bg-muted/50">
             <Item.Media>
-              <BadgeCheckIcon class="size-5" />
+              <Wallet class="size-5" />
             </Item.Media>
             <Item.Content>
               <Item.Title>
