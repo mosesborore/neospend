@@ -1,4 +1,8 @@
-import { createSelectSchema, createInsertSchema } from "drizzle-zod";
+import {
+  createSelectSchema,
+  createInsertSchema,
+  createUpdateSchema,
+} from "drizzle-zod";
 
 import { users, accounts, transactions, categories } from "./schemas";
 
@@ -54,10 +58,14 @@ export type AccountType = z.infer<typeof selectAccountSchema>;
 // category types
 
 export const CreateCategorySchema = createInsertSchema(categories);
-export const selectCategorySchema = createSelectSchema(categories);
+export const SelectCategorySchema = createSelectSchema(categories);
+export const UpdateCategorySchema = createUpdateSchema(categories).extend({
+  id: z.coerce.number(),
+});
 
 export type NewCategory = z.infer<typeof CreateCategorySchema>;
-export type CategoryType = z.infer<typeof selectCategorySchema>;
+export type CategoryType = z.infer<typeof SelectCategorySchema>;
+export type UpdateCategory = z.infer<typeof UpdateCategorySchema>;
 
 // transaction types
 
