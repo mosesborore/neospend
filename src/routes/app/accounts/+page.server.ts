@@ -56,7 +56,7 @@ export const actions = {
     const form = await superValidate(event.request, zod4(UpdateAccountSchema));
 
     if (!form.valid) {
-      return message(form, "Please fill the form properly.");
+      return message(form, { toastMessage: "Please fill the form properly." });
     }
 
     try {
@@ -72,7 +72,8 @@ export const actions = {
             eq(accountTable.userId, user.id),
           ),
         );
-    } catch {
+    } catch (e) {
+      console.error(`Unable to update account for user: ${user.id}. `, e);
       return message(form, "Unable to update account.");
     }
 

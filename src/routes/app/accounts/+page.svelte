@@ -48,8 +48,9 @@
       onUpdated: ({ form }) => {
         if (form.valid) {
           toast.success(form.message?.toastMessage);
+        } else {
+          toast.error(form.message.toastMessage);
         }
-        console.log("Form submitted.");
       },
     },
   );
