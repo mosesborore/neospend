@@ -27,7 +27,7 @@ export const transactions = pgTable(
       .$default(() => "expense"),
     categoryId: integer("category_id")
       .notNull()
-      .references(() => categories.id),
+      .references(() => categories.id, { onDelete: "cascade" }),
 
     accountId: uuid("account_id")
       .notNull()

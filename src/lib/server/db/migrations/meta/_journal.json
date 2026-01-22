@@ -15,6 +15,13 @@
       "when": 1768055910205,
       "tag": "0001_dazzling_mad_thinker",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1769081699611,
+      "tag": "0002_rainy_smasher",
+      "breakpoints": true
     }
   ]
 }
