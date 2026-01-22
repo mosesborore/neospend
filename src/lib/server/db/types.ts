@@ -38,9 +38,16 @@ export type UserType = {
 // account types
 
 export const CreateAccountSchema = z.object({
-  name: z.string(),
+  name: z.string().min(1),
   balance: z.number().default(0),
 });
+
+export const UpdateAccountSchema = CreateAccountSchema.extend({
+  id: z.string(),
+});
+
+export type UpdateAccountType = z.infer<typeof UpdateAccountSchema>;
+
 export const selectAccountSchema = createSelectSchema(accounts);
 export type AccountType = z.infer<typeof selectAccountSchema>;
 

@@ -1,4 +1,6 @@
-export type { TransactionType } from "$lib/server/db/types";
+import z from "zod/v4";
+
+export type { TransactionType, UpdateAccountType } from "$lib/server/db/types";
 
 export type Transfer = {
   id: string;

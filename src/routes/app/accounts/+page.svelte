@@ -22,7 +22,7 @@
   let { data }: PageProps = $props();
 
   const totalTween = new Tween(0, {
-    duration: 1000,
+    duration: 500,
     delay: 100,
     easing: linear,
   });
@@ -37,8 +37,9 @@
   );
 
   const getAccountForm = () => data.form;
-  let { form, constraints, message, errors, enhance, reset, delayed } =
-    superForm(getAccountForm(), {
+  let { form, constraints, errors, enhance, delayed } = superForm(
+    getAccountForm(),
+    {
       resetForm: true,
       onError: ({ result }) => {
         toast.error("Unable to add the account.");
@@ -46,11 +47,54 @@
       },
       onUpdated: ({ form }) => {
         if (form.valid) {
-          toast.success(form.message.toastMessage);
+          toast.success(form.message?.toastMessage);
         }
         console.log("Form submitted.");
       },
-    });
+    },
+  );
+
+  let editDialogOpen = $state(false);
+
+  const getEditForm = () => data.editForm;
+
+  let {
+    form: editForm,
+    constraints: editConstraints,
+    errors: editErrors,
+    enhance: editEnhance,
+    reset: editReset,
+    delayed: editDelayed,
+  } = superForm(getEditForm(), {
+    resetForm: true,
+    onError: ({ result }) => {
+      toast.error("Unable to update the account.");
+      console.log("Something went wrong: ", result);
+    },
+    onUpdated: ({ form }) => {
+      if (form.valid && form.message?.toastMessage) {
+        toast.success(form.message.toastMessage);
+        invalidate("app:accounts");
+        closeEditDialog();
+      }
+      console.log("Form submitted.");
+    },
+  });
+
+  function openEditDialog(account: {
+    id: string;
+    name: string;
+    balance: number;
+  }) {
+    editReset(); // reset to new values
+    editDialogOpen = true;
+    $editForm = account;
+  }
+
+  function closeEditDialog() {
+    editDialogOpen = false;
+    editReset();
+  }
 
   async function handleDelete(id: string) {
     const confirmed = confirm(
@@ -102,56 +146,117 @@
   </header>
 
   <section class="my-6">
-    <Dialog.Root>
-      <Dialog.Trigger class={buttonVariants({ variant: "default" })}
-        >Add New Account</Dialog.Trigger
-      >
+    <div id="addFormDialog">
+      <Dialog.Root>
+        <Dialog.Trigger class={buttonVariants({ variant: "default" })}
+          >Add New Account</Dialog.Trigger
+        >
 
-      <Dialog.Content>
-        <Dialog.Header>
-          <Dialog.Title>Add New Account</Dialog.Title>
-        </Dialog.Header>
-        <div class="max-w-md w-full mx-auto grid gap-4">
-          <form
-            class="grid gap-4"
-            action="?/addAccount"
-            method="post"
-            use:enhance
-          >
-            <Field.Group>
-              <Field.Field>
-                <Field.Label for="name">Account Name</Field.Label>
-                <Input
-                  name="name"
-                  bind:value={$form.name}
-                  {...$constraints.name}
-                />
-                <Field.Description>{$errors.name}</Field.Description>
-              </Field.Field>
-              <Field.Field>
-                <Field.Label for="balance">Initial Balance</Field.Label>
-                <Input
-                  type="number"
-                  name="balance"
-                  bind:value={$form.balance}
-                  {...$constraints.balance}
-                />
-                <Field.Description>{$errors.name}</Field.Description>
-              </Field.Field>
-            </Field.Group>
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>Add New Account</Dialog.Title>
+          </Dialog.Header>
+          <div class="max-w-md w-full mx-auto grid gap-4">
+            <form
+              class="grid gap-4"
+              action="?/addAccount"
+              method="post"
+              use:enhance
+            >
+              <Field.Group>
+                <Field.Field>
+                  <Field.Label for="name">Account Name</Field.Label>
+                  <Input
+                    name="name"
+                    bind:value={$form.name}
+                    {...$constraints.name}
+                  />
+                  <Field.Description>{$errors.name}</Field.Description>
+                </Field.Field>
+                <Field.Field>
+                  <Field.Label for="balance">Initial Balance</Field.Label>
+                  <Input
+                    type="number"
+                    name="balance"
+                    bind:value={$form.balance}
+                    {...$constraints.balance}
+                  />
+                  <Field.Description>{$errors.name}</Field.Description>
+                </Field.Field>
+              </Field.Group>
 
-            <Dialog.Footer>
-              <Button type="submit" class="w-full">
-                Save
-                {#if $delayed}
-                  <Spinner />
-                {/if}
-              </Button>
-            </Dialog.Footer>
-          </form>
-        </div>
-      </Dialog.Content>
-    </Dialog.Root>
+              <Dialog.Footer>
+                <Button type="submit" class="w-full">
+                  Save
+                  {#if $delayed}
+                    <Spinner />
+                  {/if}
+                </Button>
+              </Dialog.Footer>
+            </form>
+          </div>
+        </Dialog.Content>
+      </Dialog.Root>
+    </div>
+    <div class="editFormDialog">
+      <Dialog.Root bind:open={editDialogOpen}>
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>Edit Account</Dialog.Title>
+          </Dialog.Header>
+          <div class="max-w-md w-full mx-auto grid gap-4">
+            <form
+              class="grid gap-4"
+              action="?/updateAccount"
+              method="post"
+              use:editEnhance
+            >
+              <input type="hidden" name="id" bind:value={$editForm.id} />
+              <Field.Group>
+                <Field.Field>
+                  <Field.Label for="edit-name">Account Name</Field.Label>
+                  <Input
+                    id="edit-name"
+                    name="name"
+                    bind:value={$editForm.name}
+                    {...$editConstraints.name}
+                  />
+                  <Field.Description>{$editErrors.name}</Field.Description>
+                </Field.Field>
+                <Field.Field>
+                  <Field.Label for="edit-balance">Balance</Field.Label>
+                  <Input
+                    id="edit-balance"
+                    type="number"
+                    name="balance"
+                    bind:value={$editForm.balance}
+                    {...$editConstraints.balance}
+                  />
+                  <Field.Description>{$editErrors.balance}</Field.Description>
+                </Field.Field>
+              </Field.Group>
+
+              <Dialog.Footer class="flex gap-4 justify-between items-center">
+                <Button
+                  class="flex-1"
+                  type="button"
+                  variant="outline"
+                  onclick={closeEditDialog}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" class="flex-1">
+                  Update
+                  {#if $editDelayed}
+                    <Spinner />
+                  {/if}
+                </Button>
+              </Dialog.Footer>
+            </form>
+          </div>
+        </Dialog.Content>
+      </Dialog.Root>
+    </div>
   </section>
 
   <section class="max-w-xl mx-auto p-4">
@@ -191,7 +296,7 @@
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content>
                   <DropdownMenu.Group>
-                    <DropdownMenu.Item>
+                    <DropdownMenu.Item onclick={() => openEditDialog(account)}>
                       <Pencil /> Edit
                     </DropdownMenu.Item>
                     <DropdownMenu.Item onclick={() => handleDelete(account.id)}>
