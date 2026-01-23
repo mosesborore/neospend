@@ -15,6 +15,8 @@ import {
 export const load: PageServerLoad = async (event) => {
   const user = requireLogin(event);
 
+  event.depends("delete:category");
+
   const categories = await db
     .select()
     .from(categoryTable)
@@ -55,7 +57,7 @@ export const actions = {
     }
 
     return message(form, {
-      toastMessage: `{form.data.name}: New Category added.`,
+      toastMessage: `${form.data.name}: New Category added.`,
     });
   },
   updateCategory: async (event) => {
