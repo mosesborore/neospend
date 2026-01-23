@@ -1,7 +1,7 @@
 <script lang="ts">
   import MoreVertical from "@lucide/svelte/icons/more-vertical";
   import { Spinner } from "$lib/components/ui/spinner/index.js";
-
+  import { invalidate } from "$app/navigation";
   import * as Item from "$lib/components/ui/item/index.js";
   import type { PageProps } from "./$types";
   import * as Dialog from "$lib/components/ui/dialog/index.js";
@@ -96,6 +96,51 @@
     transactionTypes.find((t) => t.value === $editForm.type)?.label ??
       "Choose transaction type",
   );
+
+  let deletingCategoryId = $state<number | null>(null);
+
+  async function handleDelete(id: number) {
+    if (!id || id <= 0) {
+      toast.error("Invalid category ID.");
+      return;
+    }
+
+    const confirmed = confirm(
+      "Are you sure you want to delete this category? This will also delete all associated transactions and adjust account balances accordingly. This action cannot be undone.",
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    deletingCategoryId = id;
+
+    try {
+      const resp = await fetch("/api/categories", {
+        method: "DELETE",
+        body: JSON.stringify({ id }),
+        headers: {
+          "content-type": "application/json",
+        },
+      });
+
+      const result = await resp.json();
+
+      if (resp.ok && result.success) {
+        toast.success(result.message);
+        await invalidate("delete:category");
+      } else {
+        toast.error(result.message || "Failed to delete category.");
+      }
+    } catch (e) {
+      console.error("Error deleting category:", e);
+      toast.error(
+        "Network error occurred while deleting the category. Please try again.",
+      );
+    } finally {
+      deletingCategoryId = null;
+    }
+  }
 </script>
 
 <svelte:head>
@@ -319,8 +364,16 @@
         <DropdownMenu.Item onclick={() => openEditDialog(category)}>
           <Pencil /> Edit
         </DropdownMenu.Item>
-        <DropdownMenu.Item>
-          <Trash2 /> Delete
+        <DropdownMenu.Item
+          onclick={() => handleDelete(category.id)}
+          disabled={deletingCategoryId === category.id}
+        >
+          {#if deletingCategoryId === category.id}
+            <Spinner />
+          {:else}
+            <Trash2 />
+          {/if}
+          Delete
         </DropdownMenu.Item>
       </DropdownMenu.Group>
     </DropdownMenu.Content>
